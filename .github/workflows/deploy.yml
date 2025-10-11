@@ -1,0 +1,51 @@
+name: Deploy Angular to Cloud Run
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: prod
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Installer gcloud
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Authentifier Docker pour gcr.io
+        run: gcloud auth configure-docker gcr.io
+
+      - name: Build & Push Docker image
+        run: |
+          docker build -t $IMAGE_REPO:$IMAGE_TAG --build-arg BUILD_ENV=cloud .
+          docker push $IMAGE_REPO:$IMAGE_TAG
+
+      - name: Déployer sur Cloud Run
+        run: |
+          gcloud run deploy $SERVICE_NAME \
+            --image $IMAGE_REPO:$IMAGE_TAG \
+            --platform managed \
+            --region $REGION \
+            --allow-unauthenticated \
+            --service-account $SERVICE_ACCOUNT \
+            --port 80 \
+            --timeout=300
+
+      - name: Afficher l’URL du service
+        run: gcloud run services describe $SERVICE_NAME --region $REGION --format='value(status.url)'
+
+
