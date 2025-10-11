@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -28,7 +28,11 @@ import { ProductComponent } from './product/product.component';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {registerLocaleData} from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import { CaddyComponent } from './caddy/caddy.component';
 
+registerLocaleData(localeFr, 'fr-FR');
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +41,8 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
     HomeComponent,
     ConditionsOfUseComponent,
     PrivacyPolicyComponent,
-    ProductComponent
+    ProductComponent,
+    CaddyComponent
   ],
   imports: [
     BrowserModule,

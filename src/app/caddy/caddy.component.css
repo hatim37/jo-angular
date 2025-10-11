@@ -1,0 +1,51 @@
+.bordure{
+  border: black solid 1px;
+}
+
+mat-card { border-radius: 8px; }
+
+.product-thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+@media (min-width: 768px) {
+  .product-thumb {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.product-price {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5rem;
+  @media screen and (min-width: 380px){
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.product-container {
+  flex-direction: column;
+  @media screen and (min-width: 325px){
+    flex-direction: row;
+  }
+}
+
+.product-container-name {
+  flex-direction: column;
+  @media screen and (min-width: 490px){
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.spinner-border-qty {
+  font-size: 10px;
+  height: 1rem;
+  width: 1rem
+}

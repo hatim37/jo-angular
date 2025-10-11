@@ -1,0 +1,82 @@
+<div class="padding-10">
+  <mat-card class="height-container">
+    <mat-card-header>
+      <mat-card-title>Votre panier</mat-card-title>
+    </mat-card-header>
+    <mat-divider class="mb-4"></mat-divider>
+    <mat-card-content class="d-flex justify-content-center">
+      <mat-card class="col-12 col-lg-10 col-xl-8" style="max-width: 550px">
+        <mat-card-content>
+          <div *ngIf="loading" class="d-flex justify-content-center my-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+          </div>
+          <ng-container *ngIf="!loading">
+            <ng-container *ngIf="entries?.length > 0; else emptyCart">
+              <div *ngFor="let item of entries" class=" d-flex g-3 product-container border-bottom py-3 ">
+                <div class="me-2 ">
+                  <img class="product-thumb " alt="product-image"
+                       [src]="item.product.processedImg"/>
+                </div>
+                <div class="d-flex  product-container-name" style="width: 100%">
+                  <div class="ps-2">
+                    <div class="fw-semibold">
+                      {{item.product.name }}
+                    </div>
+                  </div>
+                  <div class="d-flex product-price ">
+                    <div class="col-auto ps-2">
+                    <span>
+                      {{ item.price | currency:'EUR':'symbol':'1.2-2':'fr-FR' }}
+                    </span>
+                    </div>
+                    <div class="d-flex flex-row ">
+                      <div class="col-auto">
+                        <div class="d-flex align-items-center ">
+                          <button mat-icon-button [disabled]="item.quantity == 1"
+                                  (click)="onAddProductToCaddy(item.product, 'remove')">
+                            <mat-icon>remove_circle_outline</mat-icon>
+                          </button>
+                          <span class="mx-2">{{ item.quantity }}</span>
+                          <button mat-icon-button
+                                  (click)="onAddProductToCaddy(item.product, 'add')">
+                            <mat-icon>add_circle_outline</mat-icon>
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="col-auto ms-auto">
+                        <button mat-icon-button
+                                (click)="removeProductFromCaddy(item.product.id)">
+                          <mat-icon color="warn">delete_forever</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-end fw-bold mt-3">
+                Total :
+                <span
+                  class="ms-2">{{ caddyService.getTotal()| currency:'EUR':'symbol':'1.2-2':'fr-FR' }}
+          </span>
+              </div>
+
+              <div class="text-end mt-3">
+                <button mat-raised-button color="primary" >Passer commande</button>
+              </div>
+            </ng-container>
+          </ng-container>
+          <!-- Panier vide -->
+          <ng-template #emptyCart>
+            <div class="d-flex flex-column align-items-center justify-content-center py-5">
+              <mat-icon class="mb-2">remove_shopping_cart</mat-icon>
+              <span>Aucun produit dans votre panier.</span>
+            </div>
+          </ng-template>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+  </mat-card>
+</div>

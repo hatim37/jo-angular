@@ -3,21 +3,20 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span class="spacer"></span>
+  <div  routerLink="/panier"  [matBadge]="caddiesService.getTotalCaddy() || 0"
+       [matBadgeHidden]="(caddiesService.getTotalCaddy() || 0) === 0" matBadgeOverlap="small" class=" clickable me-3">
+    <i class="bi bi-bag"></i>
+  </div>
+
 </mat-toolbar>
 <mat-drawer-container>
   <mat-drawer #drawer position="start" [mode]="drawerMode" [opened]="drawerOpened">
     <mat-nav-list>
       <mat-list-item>
-        <button mat-button routerLink="">
-          <mat-icon>dashboard</mat-icon>
-          Accueil
-        </button>
+        <button mat-button routerLink=""><mat-icon>dashboard</mat-icon>Accueil</button>
       </mat-list-item>
       <mat-list-item>
-        <button mat-button routerLink="/products">
-          <mat-icon>confirmation_number</mat-icon>
-          Billets
-        </button>
+        <button mat-button routerLink="/products"><mat-icon>person</mat-icon >Billets</button>
       </mat-list-item>
     </mat-nav-list>
   </mat-drawer>

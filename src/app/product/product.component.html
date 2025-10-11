@@ -27,13 +27,13 @@
             <mat-card-actions class="px-3 pb-3">
               <form
                 class="d-flex align-items-center form"
-                #f="ngForm" (ngSubmit)="onAddProductToCaddy()">
+                #f="ngForm" (ngSubmit)="onAddProductToCaddy(product, 'add', f.value.quantity, f)">
                 <label class="me-2 mb-0">Quantité :</label>
                 <input type="number" name="quantity" class="form-control me-2" [ngModel]="quantityMap[product.id] || 1" (ngModelChange)="quantityMap[product.id] = $event"
                        [ngModelOptions]="{ standalone: true }" min="1" required/>
-                <button mat-raised-button color="primary" [disabled]="loadingProducts[product.id]">
-                  <ng-container >Ajouter</ng-container>
-                  <ng-container >
+                <button mat-raised-button color="primary">
+                  <ng-container *ngIf="!loading">Ajouter</ng-container>
+                  <ng-container *ngIf="loading">
                     <mat-progress-spinner diameter="24" mode="indeterminate" color="primary" strokeWidth="3">
                     </mat-progress-spinner>
                   </ng-container>

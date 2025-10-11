@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ProductsService} from '../services/products.service';
+import {Product} from '../model/product.model';
+import {NgForm} from '@angular/forms';
+import {CaddiesService} from '../services/caddies.service';
 
 @Component({
   selector: 'app-product',
@@ -14,10 +17,10 @@ export class ProductComponent implements OnInit {
   products: any;
   quantityMap: { [productId: number]: number } = {};
   public errorGetProducts: boolean | undefined;
-  loadingProducts: { [productId: string]: boolean } = {};
 
   constructor(private productService: ProductsService,
-              private snackBar: MatSnackBar) { }
+              private snackBar: MatSnackBar,
+              private caddyService:CaddiesService) { }
 
   ngOnInit(): void {
     this.getAllProducts();
@@ -45,7 +48,11 @@ export class ProductComponent implements OnInit {
     })
   }
 
-  onAddProductToCaddy(){
+  onAddProductToCaddy(p: Product, option:string, quantity:number, form: NgForm){
+    const qty = this.quantityMap[p.id] || 1;
+    this.caddyService.addProductToCaddy(p, option,qty);
+    form.resetForm({ quantity: 1 });
+
   }
 
 }
