@@ -1,0 +1,9 @@
+mat-dialog-content {
+  color : green;
+}
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: #666; /* Couleur de l’icône */
+}
