@@ -1,0 +1,10 @@
+input{
+  max-width: 70px;
+}
+
+.product-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #108ee9;
+  margin-bottom: 10px;
+}

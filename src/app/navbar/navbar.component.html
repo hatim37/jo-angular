@@ -13,9 +13,16 @@
           Accueil
         </button>
       </mat-list-item>
+      <mat-list-item>
+        <button mat-button routerLink="/products">
+          <mat-icon>confirmation_number</mat-icon>
+          Billets
+        </button>
+      </mat-list-item>
     </mat-nav-list>
   </mat-drawer>
   <mat-drawer-content class="height-container">
     <router-outlet></router-outlet>
   </mat-drawer-content>
+
 </mat-drawer-container>

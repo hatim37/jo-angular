@@ -11,12 +11,23 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatDivider, MatListItem, MatNavList} from '@angular/material/list';
 import {MatBadge} from '@angular/material/badge';
-import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
+import {
+  MatCard,
+  MatCardActions,
+  MatCardContent,
+  MatCardHeader,
+  MatCardImage,
+  MatCardTitle
+} from '@angular/material/card';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { ConditionsOfUseComponent } from './conditions-of-use/conditions-of-use.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { ProductComponent } from './product/product.component';
+import {FormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -25,7 +36,8 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
     FooterComponent,
     HomeComponent,
     ConditionsOfUseComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    ProductComponent
   ],
   imports: [
     BrowserModule,
@@ -44,6 +56,11 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
     MatCardContent,
     MatCardTitle,
     MatCardHeader,
+    MatCardImage,
+    MatCardActions,
+    FormsModule,
+    HttpClientModule,
+    MatProgressSpinner,
   ],
   providers: [],
   bootstrap: [AppComponent]
