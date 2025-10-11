@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {User} from '../model/user.model';
+import {newCode, User} from '../model/user.model';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
@@ -16,4 +16,11 @@ export class AuthService {
     return this.http.post(`${environment.backend_user}/registration`, user, this.options);
   }
 
+  validation(activationCode: any) {
+    return this.http.post(`${environment.backend_validation}/activation-send`, activationCode, this.options);
+  }
+
+  sendNewCode(id: newCode) {
+    return this.http.post(`${environment.backend_validation}/validation-newSend`, id, this.options);
+  }
 }

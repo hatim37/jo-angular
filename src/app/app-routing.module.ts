@@ -6,6 +6,7 @@ import {ConditionsOfUseComponent} from './conditions-of-use/conditions-of-use.co
 import {ProductComponent} from './product/product.component';
 import {CaddyComponent} from './caddy/caddy.component';
 import {SignupComponent} from './signup/signup.component';
+import {ValidationComponent} from './validation/validation.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path: 'products', component: ProductComponent},
   {path: 'panier', component: CaddyComponent},
   {path: 'signup', component: SignupComponent},
+  {path: 'validation', component: ValidationComponent},
 
 ];
 

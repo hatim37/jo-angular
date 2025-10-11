@@ -16,7 +16,7 @@ import {
   MatCardActions,
   MatCardContent,
   MatCardHeader,
-  MatCardImage,
+  MatCardImage, MatCardSubtitle,
   MatCardTitle
 } from '@angular/material/card';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -37,6 +37,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatInput} from '@angular/material/input';
 import {MatDialogActions, MatDialogClose, MatDialogContent} from '@angular/material/dialog';
+import { ValidationComponent } from './validation/validation.component';
 
 registerLocaleData(localeFr, 'fr-FR');
 @NgModule({
@@ -50,7 +51,8 @@ registerLocaleData(localeFr, 'fr-FR');
     ProductComponent,
     CaddyComponent,
     SignupComponent,
-    SnackbarComponent
+    SnackbarComponent,
+    ValidationComponent
   ],
   imports: [
     BrowserModule,
@@ -80,7 +82,8 @@ registerLocaleData(localeFr, 'fr-FR');
     MatInput,
     MatDialogContent,
     MatDialogActions,
-    MatDialogClose
+    MatDialogClose,
+    MatCardSubtitle
   ],
   providers: [],
   bootstrap: [AppComponent]
