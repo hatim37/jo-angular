@@ -1,0 +1,190 @@
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  @media screen and (max-width: 767px) {
+    margin-top: 2rem;
+  }
+}
+
+.titre-accueil{
+  color: black;
+  font-size: 3rem;
+  line-height: 3rem;
+  padding-right: 1rem;
+  font-weight: 400;
+  @media screen and (min-width: 767px) {
+    padding-right: 0;
+    font-size: 2.1rem;
+  }
+  @media screen and (min-width: 992px) {
+    padding-right: 0;
+    font-size: 2.8rem;
+  }
+  @media screen and (min-width: 1200px) {
+    padding-right: 0;
+    font-size: 3rem;
+  }
+}
+
+.lien-accueil {
+  background-color: black;
+  color: white;
+  max-width: 260px;
+  @media screen and (max-width: 767px) {
+    max-width: 100%;
+  }
+}
+
+
+
+
+.athlete-card {
+  max-width: 900px;
+  margin: 24px auto;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 4px 20px 0 rgba(0,0,0,0.04);
+  overflow: visible;
+  padding: 0;
+}
+
+.athlete-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px 0 rgba(0,0,0,0.08);
+}
+
+.athlete-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.7s cubic-bezier(.4,2,.3,1);
+  cursor: pointer;
+  will-change: transform;
+}
+
+/* L'effet de zoom */
+.athlete:hover .athlete-image {
+  transform: scale(1.05);
+}
+
+/* Le nom en bas à gauche SUR l'image */
+.athlete-name {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  background: #fff;
+  color: #000;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 1.2rem;
+  font-weight: 400;
+  box-shadow: 0 2px 6px 0 rgba(0,0,0,0.11);
+  z-index: 2;
+  opacity: 0.98;
+}
+
+.titre-image {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: black;
+}
+
+.titre-row3{
+  font-size: 5rem;
+  line-height: 4.5rem;
+  font-weight: 500;
+  color: black;
+  @media screen and (max-width: 465px) {
+    font-size: 3.5rem;
+  }
+  @media screen and (min-width: 767px) {
+    font-size: 4rem;
+  }
+  @media screen and (min-width: 992px) {
+    font-size: 5rem;
+  }
+}
+
+.titre-row4{
+  font-size: 6rem;
+  line-height: 5.5rem;
+  font-weight: 700;
+  color: black;
+  @media screen and (max-width: 569px) {
+    font-size: 3.9rem;
+  }
+  @media screen and (min-width: 570px) {
+    font-size: 4.5rem;
+  }
+  @media screen and (min-width: 767px) {
+    font-size: 3.9rem;
+  }
+  @media screen and (min-width: 996px) {
+    font-size: 4.5rem;
+  }
+
+  @media screen and (min-width: 1200px) {
+    font-size: 6rem;
+  }
+}
+
+.jo26-card {
+  margin: 24px auto;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 4px 20px 0 rgba(0,0,0,0.04);
+  overflow: visible;
+  padding: 0;
+}
+
+.jo26-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px 0 rgba(0,0,0,0.08);
+}
+
+.jo26-image-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.75); /* Opacité à régler */
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(.4,2,.3,1);
+  pointer-events: none;
+}
+
+.jo26-card:hover .jo26-image-wrapper::after {
+  opacity: 1;
+}
+
+
+.jo26-name {
+  position: absolute;
+  left: 80px;
+  bottom: 30%;
+  background: transparent;
+  color: white;
+  font-size: 5rem;
+  font-weight: 900;
+  line-height: 4.5rem;
+  z-index: 2;
+  @media screen and (max-width: 576px) {
+    font-size: 4rem;
+    left: 40px;
+  }
+
+}
+
+.jo26 {
+  padding: 0;
+}
+
+.date{
+  font-size: 2rem;
+  font-weight: 400;
+}

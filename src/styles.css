@@ -2,3 +2,34 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.padding-10 { padding: 10px; }
+.pt-10 {padding-top: 10px}
+.login-container {
+  width: 50%;
+  justify-content: center;
+  margin: auto;
+}
+.height-container {
+  min-height:90vh;
+}
+
+.spacer {
+  flex: auto;
+}
+
+.mt-1{margin-top: 1rem;}
+.mt-2{margin-top: 2rem;}
+.mt-3{margin-top: 3rem;}
+.mt-4{margin-top: 4rem;}
+.mb-1{margin-bottom: 1rem;}
+.mb-2{margin-bottom: 2rem}
+.mr-05{margin-right: 0.5rem}
+.mr-1{margin-right: 1rem}
+.mr-2{margin-right: 2rem}
+.ml-1{margin-left: 1rem}
+.ml-2{margin-left: 2rem}
+
+.clickable {
+  cursor: pointer;
+}

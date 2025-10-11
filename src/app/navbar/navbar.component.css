@@ -1,0 +1,23 @@
+.mat-badge-content{
+  background-color: #ff4081!important;
+
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.caddy {
+  background-color: #3f51b5 !important;
+}
+
+.btn-menu-top {
+  font-size: 0.7rem !important;
+  @media screen and (min-width: 350px){
+    font-size: 0.9rem !important;
+  }
+
+  @media screen and (min-width: 576px){
+    font-size: 0.9rem !important;
+  }
+}
