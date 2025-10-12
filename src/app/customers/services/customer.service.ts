@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {AuthService} from '../../services/auth.service';
+import {DecryptDto} from '../../model/decryptDto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,14 @@ export class CustomerService {
 
   public getQrCodeById(id:number) {
     return this.http.get(`${environment.backend_cart}/qrCode/${id}`);
+  }
+
+  public readQrCode(image:any) {
+    return this.http.post(`${environment.backend_cart}/decryptQrCode`, image);
+  }
+
+  public decryptKeyInQrCode(decryptDto: DecryptDto ){
+    return this.http.post(`${environment.backend_cart}/decryptKeyInQrCode`, decryptDto);
   }
 
 

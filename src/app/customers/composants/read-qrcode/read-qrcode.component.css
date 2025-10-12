@@ -1,0 +1,12 @@
+.green {
+  background-color: #048f04;
+}
+
+mat-card{
+  min-height: 80vh;
+}
+
+.green-button {
+  background-color: #4caf50 !important;
+  color: white !important;
+}

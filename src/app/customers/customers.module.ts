@@ -19,6 +19,7 @@ import { MyOrdersComponent } from './composants/my-orders/my-orders.component';
 import {MatPaginator} from '@angular/material/paginator';
 import { DetailProductOrderComponent } from './composants/detail-product-order/detail-product-order.component';
 import { QrCodeComponent } from './composants/qr-code/qr-code.component';
+import { ReadQrcodeComponent } from './composants/read-qrcode/read-qrcode.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { QrCodeComponent } from './composants/qr-code/qr-code.component';
     PlaceOrderComponent,
     MyOrdersComponent,
     DetailProductOrderComponent,
-    QrCodeComponent
+    QrCodeComponent,
+    ReadQrcodeComponent
   ],
   imports: [
     CommonModule,

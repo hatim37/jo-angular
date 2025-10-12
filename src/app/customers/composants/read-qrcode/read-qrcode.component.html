@@ -1,0 +1,38 @@
+<div class="padding-10">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Lire un QrCode</mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content >
+      <form [formGroup]="readCodeForm" (ngSubmit)="readCode()" class="mt-2">
+        <mat-form-field appearance="outline" >
+          <mat-label>Selectionner un Qr Code</mat-label>
+          <button type="button" mat-icon-button color="primary" matPrefix (click)="f_input.click()">
+            <mat-icon>attach_file</mat-icon>
+          </button>
+          <input matInput readonly formControlName="fileName">
+          <input type="file" hidden #f_input (change)="onFileSelected($event)" accept=".png,.jpeg,.jpg">
+          <mat-error *ngIf="messageErrorFormat">
+            {{messageErrorFormat}}
+          </mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" class="ml-1" [disabled]="!readCodeForm.valid || !selectedFile">Valider</button>
+      </form>
+
+      <div *ngIf="valueFromQrCode">
+        <p>Nom : {{valueFromQrCode.name}}</p>
+        <p>Type de billet : {{valueFromQrCode.type}}</p>
+        <p>Quantité : {{valueFromQrCode.quantity}}</p>
+        <p>Code de sécurité : {{valueFromQrCode.code}}</p>
+        <button mat-raised-button [ngClass]="{'green-button': codeDecrypty && !messageError}" [color]="messageError ? 'warn' : 'primary'" (click)="testCode()" class="mb-1">
+          Test sécurité
+        </button>
+        <p class="mt-1" *ngIf="codeDecrypty">Code de sécurité : {{codeDecrypty.outputCode}}</p>
+        <p class="mt-1" *ngIf="messageError">Code de sécurité : {{messageError}}</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
