@@ -12,7 +12,7 @@ import {MatDialogContent} from '@angular/material/dialog';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {NgxMaskDirective} from 'ngx-mask';
 import { MyOrdersComponent } from './composants/my-orders/my-orders.component';
@@ -47,6 +47,7 @@ import { ReadQrcodeComponent } from './composants/read-qrcode/read-qrcode.compon
     MatIcon,
     NgxMaskDirective,
     MatPaginator,
+    MatIconButton,
 
   ]
 })

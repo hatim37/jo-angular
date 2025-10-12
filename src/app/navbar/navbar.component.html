@@ -36,6 +36,9 @@
       <mat-list-item *ngIf="authService.authenticated">
         <button mat-button routerLink="/customers/commandes"><mat-icon>list</mat-icon>Mes commandes</button>
       </mat-list-item>
+      <mat-list-item *ngIf="authService.roles.includes('ADMIN') || authService.roles.includes('AGENT')" >
+        <button mat-button routerLink="/customers/decode"><mat-icon>lock_open</mat-icon>Decode</button>
+      </mat-list-item>
     </mat-nav-list>
   </mat-drawer>
   <mat-drawer-content class="height-container">
