@@ -44,6 +44,8 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import {AuthGuard} from './guards/auth.guard';
 import {AuthorizationGuard} from './guards/authorization.guard';
 import {provideNgxMask} from 'ngx-mask';
+import {MatPaginatorIntl} from '@angular/material/paginator';
+import {getFrPaginatorIntl} from './shared/custom-paginator-intl';
 
 registerLocaleData(localeFr, 'fr-FR');
 @NgModule({
@@ -60,7 +62,7 @@ registerLocaleData(localeFr, 'fr-FR');
     SnackbarComponent,
     ValidationComponent,
     LoginComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
   ],
   imports: [
     BrowserModule,
@@ -96,7 +98,9 @@ registerLocaleData(localeFr, 'fr-FR');
   providers: [{provide: HTTP_INTERCEPTORS, useClass:AppHttpInterceptor, multi:true},
     AuthGuard, AuthorizationGuard,
     {provide: LOCALE_ID, useValue: 'fr-FR'},
-    provideNgxMask(),],
+    provideNgxMask(),
+    { provide: MatPaginatorIntl, useValue: getFrPaginatorIntl() }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

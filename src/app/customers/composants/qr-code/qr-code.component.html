@@ -1,0 +1,13 @@
+<mat-dialog-content class="mat-typography">
+  <mat-card>
+    <mat-card-title >Votre billet</mat-card-title>
+    <mat-card-content>
+      <div class="product-image" *ngIf="valueBackend">
+        <img [src]="valueBackend.qrCodeImg" alt="product-image">
+      </div>
+      <div class="button-row">
+        <button mat-stroked-button color="warn" class="close-button" (click)="closeForm()">Fermer</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>

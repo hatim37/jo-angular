@@ -15,13 +15,20 @@ import {MatOption, MatSelect} from '@angular/material/select';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {NgxMaskDirective} from 'ngx-mask';
+import { MyOrdersComponent } from './composants/my-orders/my-orders.component';
+import {MatPaginator} from '@angular/material/paginator';
+import { DetailProductOrderComponent } from './composants/detail-product-order/detail-product-order.component';
+import { QrCodeComponent } from './composants/qr-code/qr-code.component';
 
 
 @NgModule({
   declarations: [
     CustomersComponent,
     PaymentComponent,
-    PlaceOrderComponent
+    PlaceOrderComponent,
+    MyOrdersComponent,
+    DetailProductOrderComponent,
+    QrCodeComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +44,7 @@ import {NgxMaskDirective} from 'ngx-mask';
     MatButton,
     MatIcon,
     NgxMaskDirective,
+    MatPaginator,
 
   ]
 })

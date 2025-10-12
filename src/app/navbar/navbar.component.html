@@ -28,15 +28,13 @@
     <mat-nav-list>
       <mat-list-item>
         <button mat-button routerLink="">
-          <mat-icon>dashboard</mat-icon>
-          Accueil
-        </button>
+          <mat-icon>dashboard</mat-icon>Accueil</button>
       </mat-list-item>
       <mat-list-item>
-        <button mat-button routerLink="/products">
-          <mat-icon>confirmation_number</mat-icon>
-          Billets
-        </button>
+        <button mat-button routerLink="/products"><mat-icon>confirmation_number</mat-icon>Billets</button>
+      </mat-list-item>
+      <mat-list-item *ngIf="authService.authenticated">
+        <button mat-button routerLink="/customers/commandes"><mat-icon>list</mat-icon>Mes commandes</button>
       </mat-list-item>
     </mat-nav-list>
   </mat-drawer>

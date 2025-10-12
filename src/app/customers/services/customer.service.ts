@@ -17,5 +17,18 @@ export class CustomerService {
     return this.http.post(`${environment.backend_orders}/customer/placeOrder`, orderDto);
   }
 
+  public getOrdersByUserId():Observable<any> {
+    let userId = this.authService.userId;
+    return this.http.get(`${environment.backend_orders}/customer/myOrders/${userId}`);
+  }
+
+  public getCartByOrderId(orderId:number) {
+    return this.http.get(`${environment.backend_cart}/cart-detail/${orderId}`);
+  }
+
+  public getQrCodeById(id:number) {
+    return this.http.get(`${environment.backend_cart}/qrCode/${id}`);
+  }
+
 
 }

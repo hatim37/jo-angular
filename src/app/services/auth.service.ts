@@ -6,6 +6,7 @@ import {UUIDTypes} from 'uuid';
 import { v4 as uuidv4 } from 'uuid';
 import {Router} from '@angular/router';
 import {jwtDecode} from 'jwt-decode';
+import {Subject, tap} from 'rxjs';
 
 
 @Injectable({
@@ -22,6 +23,8 @@ export class AuthService {
   public jwtToken!: any;
   public name: any;
   email: any;
+  loginSuccess = new Subject<void>();
+  logoutSuccess = new Subject<void>();
 
   constructor(private http:HttpClient, private router: Router) { }
 
@@ -40,7 +43,11 @@ export class AuthService {
   login(email: any, password: any) {
     let deviceId = this.getOrCreateDeviceId(email);
     let body = {username: email, password: password, devices: deviceId};
-    return this.http.post(`${environment.backend_login}/signin`, body, this.options);
+    return this.http.post(`${environment.backend_login}/signin`, body, this.options).pipe(
+      tap(() => {
+        this.loginSuccess.next();
+      })
+    );
   }
 
   logout() {
@@ -50,6 +57,7 @@ export class AuthService {
     this.roles = [];
     window.localStorage.removeItem('access-token');
     this.router.navigate(['/home']);
+    this.logoutSuccess.next();
   }
 
   loadProfile(value: any) {

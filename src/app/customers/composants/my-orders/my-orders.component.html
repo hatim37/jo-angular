@@ -1,0 +1,62 @@
+<div class="padding-10">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Mes commandes</mat-card-title>
+    </mat-card-header>
+    <mat-divider class="mb-4"></mat-divider>
+    <mat-card-content>
+      <!-- Loading / erreur / vide -->
+      <div *ngIf="loading" class="d-flex justify-content-center my-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+
+      <div *ngIf="!loading && error" class="d-flex justify-content-center my-5">
+        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+          <mat-icon class="mb-2">remove_shopping_cart</mat-icon>
+          <span>Erreur lors du chargement, veuillez réessayer</span>
+        </div>
+      </div>
+
+      <div *ngIf="!loading && !error && orders.length === 0" class="d-flex justify-content-center my-5">
+        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+          <mat-icon class="mb-2">remove_shopping_cart</mat-icon>
+          <span>Aucune commande disponible.</span>
+        </div>
+      </div>
+
+      <div class="row g-3" *ngIf="!loading && !error && orders.length > 0">
+        <div class="col-12 col-xl-8" *ngFor="let o of pagedOrders; trackBy: trackById">
+          <mat-card class="order-card mat-elevation-z2 mt-2 ">
+            <mat-card-header class="">
+              <div mat-card-avatar class="order-avatar">#</div>
+              <mat-card-title>Commande {{ o.trackingId | uppercase | slice:0:8 }}</mat-card-title>
+              <mat-card-subtitle>{{ authService.email }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content class="">
+              <div class="row ">
+                <div class="col-6 ">
+                  <div class="label">Montant</div>
+                  <div class="value">{{ o.amount | number:'0.2' }} €</div>
+                </div>
+                <div class="col-6 text-end ">
+                  <div class="label">Date</div>
+                  <div class="value">{{ o.date | date :'dd/MM/yyyy' }}</div>
+                </div>
+              </div>
+              <div class="mt-2 ">
+                <span class="status" [ngClass]="statusClass(o.orderStatus)">{{ o.orderStatus }}</span>
+              </div>
+            </mat-card-content>
+            <mat-card-actions align="end" class="">
+              <button mat-raised-button color="primary" [routerLink]="'/customers/product_list_order/' + o.id">e-billet</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+      <mat-paginator *ngIf="orders.length > 0" [length]="orders.length" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons (page)="onPage($event)">
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>

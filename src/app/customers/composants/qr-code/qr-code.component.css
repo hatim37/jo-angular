@@ -1,0 +1,125 @@
+.container {
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+
+mat-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+mat-card-title {
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: #2c387e;
+}
+
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+input {
+  font-size: 16px;
+}
+
+
+button {
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.35s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #2c387e;
+}
+
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-button {
+  display: flex;
+  flex: 0.6;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.order-button:hover {
+  background-color: #2c387e;
+}
+
+.close-button {
+  flex: 0.3;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  padding: 12px 24px;
+}
+
+.close-button:hover {
+  color: #2c387e;
+}
+
+
+mat-error {
+  color: #f44336;
+  font-size: 14px;
+}
+
+.error-snackbar {
+  background: #f44336 !important;
+}
+
+
+.mat-mdc-dialog-content {
+  max-height: 90vh !important;
+}
+
+
+.product-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.product-image img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 8px;
+}
+
+
+@media (max-width: 600px) {
+  mat-dialog-content {
+    padding: 0 8px;
+  }
+
+  mat-card-title {
+    font-size: 20px;
+  }
+
+  .product-image {
+    padding: 5px;
+  }
+
+  .close-button {
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+}
