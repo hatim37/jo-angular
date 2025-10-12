@@ -20,4 +20,56 @@
       <button mat-button color="accent" (click)="sendNewCode()">Vous n'avez pas recu le code ? renvoyer un code</button>
     </mat-card-actions>
   </mat-card>
+
+  <mat-card *ngIf="mode==1">
+    <mat-card-title>{{messageError}}</mat-card-title>
+    <mat-card-subtitle [ngStyle]="{'color': '#3f51b5'}">Un code de validation vous a été envoyé sur votre boite mail : <span style="color:black;">{{email}}</span></mat-card-subtitle>
+    <mat-card-content>
+      <form [formGroup]="passwordForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Code de validation</mat-label>
+          <input matInput formControlName="code" placeholder="Code de validation" required (keypress)="allowOnlyDigits($event)">
+          <mat-error *ngIf="passwordForm.get('code')?.invalid && passwordForm.get('code')?.touched">Code invalid</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Mot de passe</mat-label>
+          <input matInput type="{{ hidePassword ? 'password':'text'}}" formControlName="password" placeholder="Mot de passe"
+                 required (input)="validatePassword()">
+          <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+
+          <mat-hint class="PasswordRequired">
+
+            <span [ngClass]="{ 'valid': isLengthValid, 'invalid': !isLengthValid }">
+              - Au minimum 7 caractères
+            </span>
+            <span [ngClass]="{ 'valid': hasUpperCase, 'invalid': !hasUpperCase }">
+              - Au minimum une majuscule
+            </span>
+            <span [ngClass]="{ 'valid': hasNumber, 'invalid': !hasNumber }">
+              - Au minimum un chiffre
+            </span>
+          </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="repeatPassword mt-5">
+          <mat-label>Confirmer mot de passe</mat-label>
+          <input matInput type="{{ hidePassword ? 'password':'text'}}" formControlName="confirmPassword" placeholder="Confirmer mot de passe" required>
+          <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+        <div class="button-row">
+          <button mat-raised-button color="primary" type="submit"  [disabled]="passwordForm.invalid" class="order-*button" (click)="newPassword()">
+            Valider
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button color="accent" (click)="sendNewCode()">Vous n'avez pas recu le code ? renvoyer un code</button>
+    </mat-card-actions>
+  </mat-card>
 </div>

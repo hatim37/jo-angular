@@ -1,0 +1,130 @@
+<div class="padding-10">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Les utilisateurs</mat-card-title>
+    </mat-card-header>
+    <mat-divider class="mb-4"></mat-divider>
+    <mat-card-content>
+      <!-- Loading / erreur / vide -->
+      <div *ngIf="loading" class="d-flex justify-content-center my-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+
+      <div *ngIf="!loading && messageError" class="d-flex justify-content-center my-5">
+        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+          <i class="bi bi-person-slash iconUser mb-1"></i>
+          <span>Erreur lors du chargement, veuillez réessayer</span>
+        </div>
+      </div>
+
+      <div *ngIf="!loading && !messageError && allUsers.length === 0" class="d-flex justify-content-center my-5">
+        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+          <i class="bi bi-person-slash iconUser mb-1"></i>
+          <span>Aucun utilisateur.</span>
+        </div>
+      </div>
+      <div *ngIf="!loading && !error && allUsers.length > 0">
+        <div class="table-toolbar">
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Rechercher
+              <mat-icon>search</mat-icon>
+            </mat-label>
+            <input matInput (input)="onFilter($event)">
+          </mat-form-field>
+
+          <div class="column-filters">
+            <span class="me-2">Filtres :</span>
+            <mat-checkbox *ngFor="let c of displayCols" class="me-3" [(ngModel)]="c.show"
+                          (change)="onToggleCols()">{{ c.label }}
+            </mat-checkbox>
+          </div>
+        </div>
+        <div class="table-container">
+          <table mat-table [dataSource]="dataSource" matSort
+                 class="mat-elevation-z2"
+                 matSortActive="created" matSortDisableClear matSortDirection="desc">
+
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+              <td mat-cell *matCellDef="let element" [attr.data-label]="labelOf('id')">
+                {{ element.id }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
+              <td mat-cell *matCellDef="let element" [attr.data-label]="labelOf('name')">
+                {{ element.name }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="username">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Prénom</th>
+              <td mat-cell *matCellDef="let element" [attr.data-label]="labelOf('username')">
+                {{ element.username }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+              <td mat-cell *matCellDef="let element" [attr.data-label]="labelOf('email')">
+                {{ element.email }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="active">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+              <td mat-cell *matCellDef="let element" [attr.data-label]="labelOf('active')">
+                {{ element.active }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="roles">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Rôles</th>
+              <td mat-cell *matCellDef="let element" [attr.data-label]="labelOf('roles')">
+
+                <ng-container *ngIf="editUserId !== element.id">
+                  <span>{{ getRoleNames(element.roles) }}</span>
+                </ng-container>
+
+                <ng-container *ngIf="editUserId === element.id">
+                  <mat-form-field appearance="fill" class="w-100" style="max-width: 260px;">
+                    <mat-select
+                      [value]="getRoleNames(element.roles)"
+                      (selectionChange)="onRolesChange(element, $event.value)"
+                      multiple>
+                      <mat-option *ngFor="let role of allRoles" [value]="role.name">
+                        {{ role.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </ng-container>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+              <td mat-cell *matCellDef="let element" [attr.data-label]="labelOf('action')">
+                <button mat-raised-button color="warn" *ngIf="editUserId === element.id"
+                        (click)="deleteAccount(element.email)">
+                  <mat-icon>delete_forever</mat-icon>
+                  <span class="ms-1">Supprimer</span>
+                </button>
+                <button mat-raised-button color="primary" *ngIf="editUserId !== element.id"
+                        (click)="editUser(element.id)">
+                  <mat-icon>edit</mat-icon>
+                  <span class="ms-1">Modifier</span>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+        <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

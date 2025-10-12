@@ -16,6 +16,7 @@ export class AppHttpInterceptor implements HttpInterceptor {
       !req.url.includes("api/registration") &&
       !req.url.includes("api/activation-send")&&
       !req.url.includes("api/validation-newSend")&&
+      !req.url.includes("api/edit-password")&&
       !req.url.includes("api/products")){
 
       let newRequest = req.clone({

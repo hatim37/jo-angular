@@ -15,7 +15,7 @@
     <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>{{ authService.username }}
   </button>
   <mat-menu #importMenu>
-    <button mat-menu-item routerLink="/customer/account">Mon compte</button>
+    <button mat-menu-item routerLink="/customers/account">Mon compte</button>
     <button (click)="logout()" mat-menu-item>Se déconnecter</button>
   </mat-menu>
   <button *ngIf="!authService.authenticated" mat-raised-button color="basic" class="mr-1 btn-menu-top" routerLink="/signup">Créer un compte</button>
@@ -31,13 +31,25 @@
           <mat-icon>dashboard</mat-icon>Accueil</button>
       </mat-list-item>
       <mat-list-item>
-        <button mat-button routerLink="/products"><mat-icon>confirmation_number</mat-icon>Billets</button>
+        <button mat-button [routerLink]="authService.roles.includes('ADMIN') ? '/admin/dashboard' : '/products'"><mat-icon>confirmation_number</mat-icon>Billets</button>
       </mat-list-item>
       <mat-list-item *ngIf="authService.authenticated">
         <button mat-button routerLink="/customers/commandes"><mat-icon>list</mat-icon>Mes commandes</button>
       </mat-list-item>
       <mat-list-item *ngIf="authService.roles.includes('ADMIN') || authService.roles.includes('AGENT')" >
         <button mat-button routerLink="/customers/decode"><mat-icon>lock_open</mat-icon>Decode</button>
+      </mat-list-item>
+      <mat-list-item *ngIf="authService.roles.includes('ADMIN')">
+        <button  mat-button routerLink="/admin/add-product"><mat-icon>add_circle_outline</mat-icon>Ajouter produits</button>
+      </mat-list-item>
+      <mat-list-item *ngIf="authService.roles.includes('ADMIN')">
+        <button  mat-button routerLink="/admin/account">	<mat-icon>supervisor_account</mat-icon>Compte utilisateurs</button>
+      </mat-list-item>
+      <mat-list-item *ngIf="authService.roles.includes('ADMIN')">
+        <button  mat-button routerLink="/admin/allOrders"><mat-icon>payment</mat-icon >Toutes les commandes</button>
+      </mat-list-item>
+      <mat-list-item *ngIf="authService.roles.includes('ADMIN')">
+        <button  mat-button routerLink="/admin/analytics"><mat-icon>compare_arrows</mat-icon>Analytics</button>
       </mat-list-item>
     </mat-nav-list>
   </mat-drawer>

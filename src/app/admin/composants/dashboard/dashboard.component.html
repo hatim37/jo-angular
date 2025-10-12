@@ -1,0 +1,75 @@
+
+<div class="p-2">
+  <mat-card class="height-container">
+    <mat-card-header>
+      <mat-card-title >Billetterie</mat-card-title>
+    </mat-card-header>
+    <mat-divider class="mb-4"></mat-divider>
+    <mat-card-content>
+      <div *ngIf="loading" class="d-flex justify-content-center my-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+      <div *ngIf="!loading && products" class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+        <div class="col" *ngFor="let product of products">
+          <mat-card class="h-100 d-flex flex-column">
+            <img mat-card-image class="img-fluid" [src]="product.processedImg || product.img" alt="product-image"/>
+            <mat-card-content class="flex-grow-1">
+              <h2 class="product-name h5 mb-1">{{ product.name }}</h2>
+              <p class="text-muted  mb-2">{{ product.description }}</p>
+              <mat-divider></mat-divider>
+              <div class="d-flex align-items-center py-2">
+                <span class="fw-semibold me-2">Prix :</span>
+                <span class="fw-bold">{{ product.price | currency:'EUR':'symbol':'1.2-2':'fr-FR' }}</span>
+              </div>
+            </mat-card-content>
+            <mat-divider></mat-divider>
+            <mat-card-actions class="px-3 pb-3">
+              <form
+                class="d-flex align-items-center form"
+                #f="ngForm"
+                (ngSubmit)="onAddProductToCaddy(product, 'add', f.value.quantity, f)">
+                <label class="me-2 mb-0">Quantité :</label>
+                <input type="number" name="quantity" class="form-control me-2"
+                       [ngModel]="quantityMap[product.id] || 1" (ngModelChange)="quantityMap[product.id] = $event" [ngModelOptions]="{ standalone: true }" min="1" required/>
+                <button mat-raised-button color="primary" [disabled]="submitting">
+                  <ng-container *ngIf="!submitting">Ajouter</ng-container>
+                  <ng-container *ngIf="submitting">
+                    <i class="fa fa-spinner fa-spin"></i> Envoi en cours…
+                  </ng-container>
+                </button>
+              </form>
+
+            </mat-card-actions>
+            <mat-divider></mat-divider>
+            <div class="d-flex flex-row justify-content-around p-2">
+              <button mat-raised-button color="accent" class="update-button" [routerLink]="'/admin/update-product/'+ product.id">Update</button>
+              <button mat-raised-button color="warn" class="delete-button"  (click)="deleteProduct(product.id)">Delete</button>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+      <!-- Produits vide -->
+      <div *ngIf="!loading && products.length === 0 && !errorGetProducts">
+        <div #emptyProducts>
+          <div class="d-flex flex-column align-items-center justify-content-center py-5">
+            <mat-icon class="mb-2">remove_shopping_cart</mat-icon>
+            <span>Aucun produit disponible.</span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="errorGetProducts">
+        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+          <mat-icon class="mb-2">remove_shopping_cart</mat-icon>
+          <span>Erreur lors du chargement, veuillez réessayer</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+
+
+

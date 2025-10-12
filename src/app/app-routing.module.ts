@@ -10,6 +10,7 @@ import {ValidationComponent} from './validation/validation.component';
 import {LoginComponent} from './login/login.component';
 import {UnauthorizedComponent} from './unauthorized/unauthorized.component';
 import {AuthGuard} from './guards/auth.guard';
+import {AuthorizationGuard} from './guards/authorization.guard';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -23,6 +24,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'customers', canActivate:[AuthGuard], loadChildren: () => import('./customers/customers.module').then(m => m.CustomersModule) },
+  { path: 'admin', canActivate:[AuthGuard, AuthorizationGuard], data: {roles: ['ADMIN']}, loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
 
 ];
 

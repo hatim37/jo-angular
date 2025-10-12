@@ -36,7 +36,7 @@ import { SnackbarComponent } from './snackbar/snackbar.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatInput} from '@angular/material/input';
-import {MatDialogActions, MatDialogClose, MatDialogContent} from '@angular/material/dialog';
+import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import { ValidationComponent } from './validation/validation.component';
 import { LoginComponent } from './login/login.component';
 import {AppHttpInterceptor} from './interceptors/app-http.interceptor';
@@ -46,6 +46,8 @@ import {AuthorizationGuard} from './guards/authorization.guard';
 import {provideNgxMask} from 'ngx-mask';
 import {MatPaginatorIntl} from '@angular/material/paginator';
 import {getFrPaginatorIntl} from './shared/custom-paginator-intl';
+import { DeleteDialogComponent } from './dialog/delete-dialog/delete-dialog.component';
+import { ValidationDialogComponent } from './dialog/validation-dialog/validation-dialog.component';
 
 registerLocaleData(localeFr, 'fr-FR');
 @NgModule({
@@ -63,6 +65,8 @@ registerLocaleData(localeFr, 'fr-FR');
     ValidationComponent,
     LoginComponent,
     UnauthorizedComponent,
+    DeleteDialogComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -93,7 +97,9 @@ registerLocaleData(localeFr, 'fr-FR');
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
-    MatCardSubtitle
+    MatCardSubtitle,
+    MatDialogTitle,
+    ValidationDialogComponent
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass:AppHttpInterceptor, multi:true},
     AuthGuard, AuthorizationGuard,

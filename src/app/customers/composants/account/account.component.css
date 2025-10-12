@@ -1,0 +1,86 @@
+.container {
+  display: flex;
+  justify-content: center;
+  margin: 3rem 0 3rem 0;
+  max-height: 90vh;
+}
+
+mat-card {
+  max-width: 600px;
+  width: 100%;
+  padding: 20px;
+
+  @media screen and (max-width: 500px) {
+    max-width: 90%;
+  }
+}
+
+mat-card-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+mat-form-field, mat-card-actions{
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+button {
+  width: 100%;
+}
+
+.text-resp {
+  font-size: 14px;
+}
+.text-mail {
+  font-size: 14px;
+}
+
+@media screen and (max-width: 500px) {
+  mat-card-title {
+    font-size: 20px;
+  }
+  mat-form-field {
+    margin-bottom: 10px;
+  }
+  .text-resp {
+    font-size: 11px;
+  }
+  .text-mail {
+    font-size: 10px;
+  }
+}
+
+.error-snackbar {
+  background: #f44336 !important;
+}
+
+.password-conditions {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.password-conditions li {
+  font-size: 14px;
+}
+
+.valid {
+  color: green;
+}
+
+.invalid {
+  color: red;
+}
+.PasswordRequired {
+  display: flex;
+  flex-direction: column;
+
+}

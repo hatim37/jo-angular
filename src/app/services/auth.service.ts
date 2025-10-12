@@ -83,7 +83,11 @@ export class AuthService {
 
   loginValidation(uuid:UUIDTypes) {
     let body = {uuid: uuid};
-    return this.http.post(`${environment.backend_login}/signin-validation`, body, this.options);
+    return this.http.post(`${environment.backend_login}/signin-validation`, body, this.options).pipe(
+      tap(() => {
+        this.loginSuccess.next();
+      })
+    );
   }
 
   getOrCreateDeviceId(email: string): string {
@@ -116,6 +120,10 @@ export class AuthService {
     // Stockage unique sous la clé 'deviceId'
     localStorage.setItem('deviceId', JSON.stringify(users));
     return deviceId;
+  }
+
+  editPassword(email: any) {
+    return this.http.post(`${environment.backend_user}/edit-password`, email, this.options);
   }
 
 }

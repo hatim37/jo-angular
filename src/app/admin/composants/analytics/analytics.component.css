@@ -1,0 +1,120 @@
+
+.mat-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  font-family: 'Roboto', 'Helvetica', sans-serif;
+  background-color: #f0f4f8;
+  color: #1a1a1a;
+}
+
+.mat-card-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1f3c88;
+}
+
+.metric-subtext {
+  font-size: 14px;
+  color: #6c7a93;
+  margin-top: 6px;
+}
+.metric-subtext-product {
+  font-size: 14px;
+  color: #1f3c88;
+  margin-top: 6px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.analytics-card, .analytics-card-prod {
+  border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #e8f0fb;
+  color: #1f3c88;
+}
+
+
+.analytics-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 16px rgba(31, 60, 136, 0.2);
+}
+
+.metric-avatar, .metric-avatar-product {
+  background: #1f3c88;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.metric-avatar {
+  width: 60px;
+  height: 60px;
+  font-size: 32px;
+}
+
+.metric-avatar-product {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+}
+
+.metric-value, .metric-total, .metric-month {
+  font-weight: 700;
+  color: #1f3c88;
+}
+
+.metric-value {
+  font-size: 36px;
+  margin-top: 12px;
+}
+
+.metric-total, .metric-month {
+  font-size: 24px;
+}
+
+.previous-month {
+  background-color: #c1d2eb;
+  color: #1f3c88;
+  padding: 8px;
+  border-radius: 0 0 8px 8px;
+
+}
+
+.this-month {
+  background-color: #dbe9fb;
+  color: #1f3c88;
+  padding: 8px;
+  border-radius: 0 0 8px 8px;
+}
+
+
+.previous-month .metric-month,
+.previous-month .metric-total {
+  color: #7698ec;
+}
+
+.this-month .metric-month,
+.this-month .metric-total {
+  color: #6389ed;
+}
+
+.ca {
+  margin-top: 1rem;
+}
+
+@media screen and (min-width: 992px) {
+  .ca {
+    margin-left: 2rem;
+    margin-top: 0;
+  }
+}
+
+mat-divider {
+  border-color: #c1d2eb;
+}
+
+.total-product {
+  min-height: 6rem;
+}

@@ -5,20 +5,17 @@ import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {SnackbarService} from '../services/snackbar.service';
-import {CaddiesService} from '../services/caddies.service';
 import {CartService} from '../services/cart.service';
+import {CaddiesService} from '../services/caddies.service';
+
 
 @Component({
-
-
   selector: 'app-validation',
   standalone: false,
   templateUrl: './validation.component.html',
   styleUrl: './validation.component.css'
 })
-
 export class ValidationComponent implements OnInit {
-
   loginForm!: FormGroup;
   passwordForm!: FormGroup;
   mode: number = 0;
@@ -26,6 +23,10 @@ export class ValidationComponent implements OnInit {
   optionId: string = '';
   messageError: string = '';
   valueBackend: any;
+  isLengthValid: boolean = false;
+  hasUpperCase: boolean = false;
+  hasNumber: boolean = false;
+  hidePassword = true;
   uuid: any;
 
   constructor(private fb: FormBuilder,
@@ -48,7 +49,6 @@ export class ValidationComponent implements OnInit {
     if (this.messageError == "Modifier votre mot de passe") {
       this.mode = 1;
     }
-
     //on initialise les formulaires
     this.loginForm = this.fb.group({
       code: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]]
@@ -59,7 +59,6 @@ export class ValidationComponent implements OnInit {
       confirmPassword: [null, [Validators.required, Validators.minLength(7), Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{7,}$/)]]
     })
   }
-
 
   onSubmit() {
     //on valide le code
@@ -106,7 +105,7 @@ export class ValidationComponent implements OnInit {
 
   sendNewCode() {
     this.authService.sendNewCode({id: +this.optionId}).subscribe({
-      next: (value: any) => {
+      next: value => {
         this.valueBackend = value;
         this.snackbarService.openValidationDialog(this.valueBackend.body, 201, 5000, '/', 'green');
       }, error: (err: any) => {
@@ -115,4 +114,42 @@ export class ValidationComponent implements OnInit {
     });
   }
 
+  newPassword() {
+    let code = this.passwordForm.value.code;
+    let password = this.passwordForm.value.password;
+    let confirmPassword = this.passwordForm.value.confirmPassword;
+    //on vérifie que le password correspond bien au confirmPassword
+    if (password !== confirmPassword) {
+      this.snackBar.open('les mots de passe ne sont pas identiques', 'Fermer', {
+        duration: 3000,
+        panelClass: 'error-snackbar'
+      });
+      return
+    }
+    this.authService.validation({code: code, password: password}).subscribe({
+      next: value => {
+        this.valueBackend = value;
+        if (this.authService.authenticated) {
+          this.snackbarService.openValidationDialog(this.valueBackend.body, this.valueBackend.statusCodeValue, 3000, '/customers/account', 'green');
+        } else {
+          this.snackbarService.openValidationDialog(this.valueBackend.body, this.valueBackend.statusCodeValue, 3000, '/login', 'green');
+        }
+      }, error: (err: any) => {
+        this.snackbarService.openValidationDialog(err.error, err.status, 5000, '/', 'red');
+      }
+    });
+  }
+
+  //affiche condition d'un password
+  validatePassword() {
+    const pwd = this.passwordForm.get('password')?.value || '';
+    this.isLengthValid = pwd.length >= 7;
+    this.hasUpperCase = /[A-Z]/.test(pwd);
+    this.hasNumber = /\d/.test(pwd);
+  }
+
+  //afficher le password saisi
+  togglePasswordVisibility() {
+    this.hidePassword = !this.hidePassword;
+  }
 }

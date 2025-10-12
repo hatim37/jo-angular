@@ -3,8 +3,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
 import {SnackbarService} from '../services/snackbar.service';
-import {CaddiesService} from '../services/caddies.service';
 import {CartService} from '../services/cart.service';
+import {CaddiesService} from '../services/caddies.service';
 
 @Component({
   selector: 'app-login',
@@ -22,13 +22,12 @@ export class LoginComponent implements OnInit {
   valueBackend:any;
   optionError: any;
 
-
   constructor(private fb: FormBuilder,
               private authService: AuthService,
               private router: Router,
               private snackbarService:SnackbarService,
               private cartService: CartService,
-              private caddyService: CaddiesService) {
+              private caddyService: CaddiesService,) {
   }
 
   ngOnInit(): void {
@@ -76,4 +75,29 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  newPassword() {
+    let email = this.passwordForm.value.email;
+    this.authService.editPassword({email: email}).subscribe({
+      next: value => {
+        this.valueBackend = value;
+        if (this.valueBackend.body.message == "validation") {
+          this.router.navigate(['/validation'], {
+            state: {email: email, optionId: this.valueBackend.body.id, message: "Modifier votre mot de passe"}
+          });
+        }
+      }, error: (err: any) => {
+        this.messageError = err.error.error;
+        this.snackbarService.openValidationDialog(this.messageError, 403, 5000, '/login', 'red');
+      }
+    });
+  }
+
+  formPassword() {
+    this.mode = 1;
+  }
+
+  formConnect() {
+    this.mode = 0;
+  }
 }
+

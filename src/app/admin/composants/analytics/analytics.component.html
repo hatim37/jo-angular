@@ -1,0 +1,110 @@
+<div class="padding-10" *ngIf="value">
+  <mat-card class="height-container">
+    <mat-card-header>
+      <mat-card-title>Statistiques total</mat-card-title>
+    </mat-card-header>
+    <mat-divider class="mt-1"></mat-divider>
+
+    <mat-card-content>
+      <div class="justify-content-center d-flex flex-column flex-lg-row mt-4 col-12">
+        <mat-card class="analytics-card col-12 col-sm-10 col-lg-5 col-xl-4">
+          <mat-card-header>
+            <div mat-card-avatar class="metric-avatar">
+              <mat-icon>check_circle_outline</mat-icon>
+            </div>
+            <mat-card-title>Total commandes</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="metric-value">{{ value.currentMonthOrders }}</div>
+            <div class="metric-subtext-product pt-2 pb-2">Ce mois-ci</div>
+          </mat-card-content>
+          <mat-card-content class="previous-month">
+            <div class="metric-value">{{ value.previousMonthOrders }}</div>
+            <div class="metric-subtext-product pt-2">Mois précédent</div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="analytics-card ca col-12 col-sm-10 col-lg-5 col-xl-4">
+          <mat-card-header>
+            <div mat-card-avatar class="metric-avatar">
+              <mat-icon>euro_symbol</mat-icon>
+            </div>
+            <mat-card-title>Chiffres d'affaires</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="metric-value">{{ value.currentMonthEarnings | number:'0.2' }} €</div>
+            <div class="metric-subtext-product pt-2 pb-2">Ce mois-ci</div>
+          </mat-card-content>
+          <mat-card-content class="previous-month">
+            <div class="metric-value">{{ value.previousMonthEarnings | number:'0.2' }} €</div>
+            <div class="metric-subtext-product pt-2">Mois précédent</div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <mat-card-title class="mt-4">Statistiques par produits :</mat-card-title>
+      <mat-divider class="m-2"></mat-divider>
+      <div class="row mt-4" *ngIf="value.productStats?.length > 0;else emptyCart">
+        <div class="col-12 col-lg-6 col-xl-4 mb-4" *ngFor="let p of value.productStats">
+
+          <mat-card class="analytics-card h-100 col-12 col-sm-10 col-lg-12 col-xl-11">
+            <mat-card-header >
+              <div class="d-flex align-items-center">
+                <div class="metric-avatar-product me-3">
+                  <mat-icon>shopping_cart</mat-icon>
+                </div>
+                <mat-card-title class="d-flex align-items-center mt-0">Offres {{ p.productName }}</mat-card-title>
+              </div>
+            </mat-card-header>
+
+            <mat-card-content class="d-flex flex-row justify-content-between align-items-center mt-4 total-product ">
+              <div class="col-6">
+                <div class="metric-total pe-3">{{ p.totalQuantity }}</div>
+                <div class="metric-subtext">Total quantité</div>
+              </div>
+              <div class="col-6 border-start">
+                <div class="metric-total ps-3">{{ p.totalAmount | number:'1.2-2' }} €</div>
+                <div class="metric-subtext ps-3">Total vendu</div>
+              </div>
+            </mat-card-content>
+
+            <mat-card-content class="this-month pb-3">
+              <div class="metric-subtext-product">Ce mois-ci :</div>
+              <div class="d-flex flex-row justify-content-between align-items-center">
+                <div class="col-6">
+                  <div class="metric-month pe-3">{{ p.currentMonthQuantity }}</div>
+                  <div class="metric-subtext">Quantité</div>
+                </div>
+                <div class="col-6 border-start">
+                  <div class="metric-month ps-3">{{ p.currentMonthTotal | number:'1.2-2' }} €</div>
+                  <div class="metric-subtext ps-3">Vendu</div>
+                </div>
+              </div>
+            </mat-card-content>
+
+            <mat-card-content class="previous-month pb-3">
+              <div class="metric-subtext-product">Mois précédent :</div>
+              <div class="d-flex flex-row justify-content-between align-items-center">
+                <div class="col-6">
+                  <div class="metric-month pe-3">{{ p.previousMonthQuantity }}</div>
+                  <div class="metric-subtext">Quantité</div>
+                </div>
+                <div class="col-6 border-start">
+                  <div class="metric-month ps-3">{{ p.previousMonthTotal | number:'1.2-2' }} €</div>
+                  <div class="metric-subtext ps-3">Vendu</div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+        </div>
+      </div>
+      <!-- Pas de stat produit -->
+      <ng-template #emptyCart>
+        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+          <mat-icon class="mb-2">remove_shopping_cart</mat-icon>
+          <span>Aucun produit vendu</span>
+        </div>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</div>
