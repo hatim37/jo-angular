@@ -4,79 +4,98 @@
       <mat-card-title>Votre panier</mat-card-title>
     </mat-card-header>
     <mat-divider class="mb-4"></mat-divider>
+
     <mat-card-content class="d-flex justify-content-center">
-      <mat-card class="col-12 col-lg-10 col-xl-8" style="max-width: 550px">
+      <div *ngIf="loading && !submitting" class="d-flex justify-content-center my-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+
+      <mat-card class="col-12 col-lg-10 col-xl-8" style="max-width: 550px" *ngIf="entries?.length > 0; else emptyCart">
         <mat-card-content>
-          <div *ngIf="loading" class="d-flex justify-content-center my-5">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Chargement...</span>
-            </div>
-          </div>
-          <ng-container *ngIf="!loading">
-            <ng-container *ngIf="entries?.length > 0; else emptyCart">
-              <div *ngFor="let item of entries" class=" d-flex g-3 product-container border-bottom py-3 ">
-                <div class="me-2 ">
-                  <img class="product-thumb " alt="product-image"
-                       [src]="item.product.processedImg"/>
-                </div>
-                <div class="d-flex  product-container-name" style="width: 100%">
-                  <div class="ps-2">
-                    <div class="fw-semibold">
-                      {{item.product.name }}
-                    </div>
+          <ng-container >
+            <div *ngFor="let item of entries" class=" d-flex g-3 product-container border-bottom py-3 ">
+              <div class="me-2 ">
+                <img class="product-thumb " alt="product-image" [src]="authService.authenticated ? item.processedImg : item.product.processedImg"/>
+              </div>
+              <div class="d-flex  product-container-name" style="width: 100%">
+                <div class="ps-2">
+                  <div class="fw-semibold">
+                    {{ authService.authenticated ? item.productName : item.product.name }}
                   </div>
-                  <div class="d-flex product-price ">
-                    <div class="col-auto ps-2">
+                </div>
+                <div class="d-flex product-price ">
+                  <div class="col-auto ps-2">
                     <span>
                       {{ item.price | currency:'EUR':'symbol':'1.2-2':'fr-FR' }}
                     </span>
-                    </div>
-                    <div class="d-flex flex-row ">
-                      <div class="col-auto">
-                        <div class="d-flex align-items-center ">
-                          <button mat-icon-button [disabled]="item.quantity == 1"
-                                  (click)="onAddProductToCaddy(item.product, 'remove')">
+                  </div>
+                  <div class="d-flex flex-row ">
+                    <div class="col-auto">
+                      <div class="d-flex align-items-center ">
+                        <button mat-icon-button [disabled]="item.quantity == 1 || loadingRemove[item.productId]" (click)="authService.authenticated
+                              ? addToCartBackend(item.productId, 'remove', 1): onAddProductToCaddy(item.product, 'remove')">
+                          <ng-container *ngIf="!loadingRemove[item.productId]">
                             <mat-icon>remove_circle_outline</mat-icon>
-                          </button>
-                          <span class="mx-2">{{ item.quantity }}</span>
-                          <button mat-icon-button
-                                  (click)="onAddProductToCaddy(item.product, 'add')">
-                            <mat-icon>add_circle_outline</mat-icon>
-                          </button>
-                        </div>
-                      </div>
+                          </ng-container>
 
-                      <div class="col-auto ms-auto">
-                        <button mat-icon-button
-                                (click)="removeProductFromCaddy(item.product.id)">
-                          <mat-icon color="warn">delete_forever</mat-icon>
+                          <ng-container *ngIf="loadingRemove[item.productId]">
+                            <mat-progress-spinner diameter="24" mode="indeterminate" color="primary" strokeWidth="3"></mat-progress-spinner>
+                          </ng-container>
+                        </button>
+                        <span class="mx-2">{{ item.quantity }}</span>
+
+                        <button mat-icon-button [disabled]="loadingAdd[item.productId]" (click)="authService.authenticated
+                                ? addToCartBackend(item.productId, 'add', 1): onAddProductToCaddy(item.product, 'add')">
+                          <ng-container *ngIf="!loadingAdd[item.productId]">
+                            <mat-icon>add_circle_outline</mat-icon>
+                          </ng-container>
+
+                          <ng-container *ngIf="loadingAdd[item.productId]">
+                            <mat-progress-spinner diameter="24" mode="indeterminate" color="primary" strokeWidth="3"></mat-progress-spinner>
+                          </ng-container>
                         </button>
                       </div>
+                    </div>
+
+                    <div class="col-auto ms-auto">
+                      <button mat-icon-button
+                              (click)="authService.authenticated? deleteCartItems(item.id): removeProductFromCaddy(item.product.id)">
+                        <mat-icon color="warn">delete_forever</mat-icon>
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="d-flex justify-content-end fw-bold mt-3">
-                Total :
-                <span
-                  class="ms-2">{{ caddyService.getTotal()| currency:'EUR':'symbol':'1.2-2':'fr-FR' }}
-          </span>
-              </div>
-
-              <div class="text-end mt-3">
-                <button mat-raised-button color="primary" >Passer commande</button>
-              </div>
-            </ng-container>
-          </ng-container>
-          <!-- Panier vide -->
-          <ng-template #emptyCart>
-            <div class="d-flex flex-column align-items-center justify-content-center py-5">
-              <mat-icon class="mb-2">remove_shopping_cart</mat-icon>
-              <span>Aucun produit dans votre panier.</span>
             </div>
-          </ng-template>
+            <div class="d-flex justify-content-end fw-bold mt-3">Total :<span
+              class="ms-2">{{(authService.authenticated ? valueBackend?.amount : caddyService.getTotal())
+              | currency:'EUR':'symbol':'1.2-2':'fr-FR' }}</span>
+            </div>
+            <div class="text-end mt-3">
+              <button mat-raised-button color="primary" (click)="placeOrder()">Passer commande</button>
+            </div>
+          </ng-container>
         </mat-card-content>
       </mat-card>
+
+      <!-- Panier vide -->
+      <ng-template #emptyCart >
+        <div *ngIf="!loading && !errorGetCaddy">
+          <div class="d-flex flex-column align-items-center justify-content-center py-5">
+            <mat-icon class="mb-2">remove_shopping_cart</mat-icon>
+            <span>Aucun produit dans votre panier.</span>
+          </div>
+        </div>
+        <!-- Erreur chargement -->
+      </ng-template>
+      <div *ngIf="!loading && errorGetCaddy">
+        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+          <mat-icon class="mb-2">remove_shopping_cart</mat-icon>
+          <span>Erreur lors du chargement, veuillez réessayer</span>
+        </div>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

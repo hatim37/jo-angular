@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
 import {SnackbarService} from '../services/snackbar.service';
 import {CaddiesService} from '../services/caddies.service';
+import {CartService} from '../services/cart.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +26,9 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private authService: AuthService,
               private router: Router,
-              private snackbarService:SnackbarService) {
+              private snackbarService:SnackbarService,
+              private cartService: CartService,
+              private caddyService: CaddiesService) {
   }
 
   ngOnInit(): void {
@@ -54,9 +55,15 @@ export class LoginComponent implements OnInit {
         this.valueBackend = value;
         //on charge les informations depuis le token + archive du token en storage
         this.authService.loadProfile(value);
-
-        this.snackbarService.openValidationDialog("Authentification réussie", 200, 1500,this.authService.roles?.includes('ADMIN') ? '/' : '/', 'green');
-
+        this.cartService.getSizeCaddy();
+        //recherche si panier pour envoi backend :
+        if (this.caddyService.getCurrentCaddy().items.size > 0) {
+          this.cartService.sendCaddyInBackend();
+          setTimeout(() => {this.cartService.getSizeCaddy();}, 500);
+          this.snackbarService.openValidationDialog("Authentification réussie", 200, 1500, '/panier', 'green');
+        } else {
+          this.snackbarService.openValidationDialog("Authentification réussie", 200, 1500, '/', 'green');
+        }
       }, error: (err: any) => {
         this.messageError = err.error.error;
         this.optionError = err.error.option;

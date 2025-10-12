@@ -26,7 +26,7 @@ import { ConditionsOfUseComponent } from './conditions-of-use/conditions-of-use.
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { ProductComponent } from './product/product.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {registerLocaleData} from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
@@ -39,6 +39,10 @@ import {MatInput} from '@angular/material/input';
 import {MatDialogActions, MatDialogClose, MatDialogContent} from '@angular/material/dialog';
 import { ValidationComponent } from './validation/validation.component';
 import { LoginComponent } from './login/login.component';
+import {AppHttpInterceptor} from './interceptors/app-http.interceptor';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import {AuthGuard} from './guards/auth.guard';
+import {AuthorizationGuard} from './guards/authorization.guard';
 
 registerLocaleData(localeFr, 'fr-FR');
 @NgModule({
@@ -54,7 +58,8 @@ registerLocaleData(localeFr, 'fr-FR');
     SignupComponent,
     SnackbarComponent,
     ValidationComponent,
-    LoginComponent
+    LoginComponent,
+    UnauthorizedComponent
   ],
   imports: [
     BrowserModule,
@@ -87,7 +92,9 @@ registerLocaleData(localeFr, 'fr-FR');
     MatDialogClose,
     MatCardSubtitle
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass:AppHttpInterceptor, multi:true},
+    AuthGuard, AuthorizationGuard,
+    {provide: LOCALE_ID, useValue: 'fr-FR'},],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

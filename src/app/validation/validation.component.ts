@@ -1,9 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
 import {SnackbarService} from '../services/snackbar.service';
-
+import {CaddiesService} from '../services/caddies.service';
+import {CartService} from '../services/cart.service';
 
 @Component({
 
@@ -26,9 +29,13 @@ export class ValidationComponent implements OnInit {
   uuid: any;
 
   constructor(private fb: FormBuilder,
+              private snackBar: MatSnackBar,
               private authService: AuthService,
+              private router: Router,
+              public dialog: MatDialog,
               private snackbarService: SnackbarService,
-              private router: Router,) {
+              private cartService: CartService,
+              private caddyService: CaddiesService) {
   }
 
 
@@ -65,7 +72,16 @@ export class ValidationComponent implements OnInit {
             next: value => {
               //on charge les informations depuis le token + archive du token en storage
               this.authService.loadProfile(value);
-              this.snackbarService.openValidationDialog("Authentification réussie", 200, 1500, '/', 'green');
+              this.cartService.getSizeCaddy();
+              //recherche si panier pour envoi backend :
+              if (this.caddyService.getCurrentCaddy().items.size > 0) {
+                this.cartService.sendCaddyInBackend();
+                this.cartService.getSizeCaddy();
+                this.snackbarService.openValidationDialog("Authentification réussie", 200, 1500, '/', 'green');
+              } else {
+                this.snackbarService.openValidationDialog("Authentification réussie", 200, 1500, '/', 'green');
+              }
+
             }, error: error => {
               this.router.navigate(['/login']);
             }

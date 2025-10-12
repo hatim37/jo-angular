@@ -8,6 +8,8 @@ import {CaddyComponent} from './caddy/caddy.component';
 import {SignupComponent} from './signup/signup.component';
 import {ValidationComponent} from './validation/validation.component';
 import {LoginComponent} from './login/login.component';
+import {UnauthorizedComponent} from './unauthorized/unauthorized.component';
+import {AuthGuard} from './guards/auth.guard';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -19,6 +21,8 @@ const routes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'validation', component: ValidationComponent},
   {path: 'login', component: LoginComponent},
+  { path: 'unauthorized', component: UnauthorizedComponent },
+  { path: 'customers', canActivate:[AuthGuard], loadChildren: () => import('./customers/customers.module').then(m => m.CustomersModule) },
 
 ];
 
