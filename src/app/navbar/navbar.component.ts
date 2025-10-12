@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {CaddiesService} from '../services/caddies.service';
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,7 @@ export class NavbarComponent implements OnInit {
   public drawerMode: 'side' | 'over' = 'side';
   public drawerOpened = true;
 
-  constructor(private bpo: BreakpointObserver, public caddiesService: CaddiesService,) {
+  constructor(private bpo: BreakpointObserver, public caddiesService: CaddiesService, public authService: AuthService) {
     this.bpo.observe('(max-width: 768px)').subscribe(state => {
       if (state.matches) {
         // Mobile : drawer en superposition et fermé par défaut
@@ -31,5 +32,8 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  logout() {
+    this.authService.logout();
+  }
 
 }

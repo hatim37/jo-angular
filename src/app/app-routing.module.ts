@@ -7,6 +7,7 @@ import {ProductComponent} from './product/product.component';
 import {CaddyComponent} from './caddy/caddy.component';
 import {SignupComponent} from './signup/signup.component';
 import {ValidationComponent} from './validation/validation.component';
+import {LoginComponent} from './login/login.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'panier', component: CaddyComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'validation', component: ValidationComponent},
+  {path: 'login', component: LoginComponent},
 
 ];
 

@@ -3,25 +3,40 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span class="spacer"></span>
-  <div  routerLink="/panier"  [matBadge]="caddiesService.getTotalCaddy() || 0"
+  <div routerLink="/panier" [matBadge]="caddiesService.getTotalCaddy() || 0"
        [matBadgeHidden]="(caddiesService.getTotalCaddy() || 0) === 0" matBadgeOverlap="small" class=" clickable me-3">
     <i class="bi bi-bag"></i>
   </div>
-  <button mat-raised-button color="basic" class="mr-1 btn-menu-top" routerLink="/signup">Créer un compte</button>
+  <button mat-button *ngIf="authService.authenticated" [matMenuTriggerFor]="importMenu">
+    <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>{{ authService.username }}
+  </button>
+  <mat-menu #importMenu>
+    <button mat-menu-item routerLink="/customer/account">Mon compte</button>
+    <button (click)="logout()" mat-menu-item>Se déconnecter</button>
+  </mat-menu>
+  <button *ngIf="!authService.authenticated" mat-raised-button color="basic" class="mr-1 btn-menu-top" routerLink="/signup">Créer un compte</button>
+  <button *ngIf="!authService.authenticated" mat-raised-button color="basic" class="btn-menu-top" routerLink="/login">
+    Connexion
+  </button>
 </mat-toolbar>
 <mat-drawer-container>
   <mat-drawer #drawer position="start" [mode]="drawerMode" [opened]="drawerOpened">
     <mat-nav-list>
       <mat-list-item>
-        <button mat-button routerLink=""><mat-icon>dashboard</mat-icon>Accueil</button>
+        <button mat-button routerLink="">
+          <mat-icon>dashboard</mat-icon>
+          Accueil
+        </button>
       </mat-list-item>
       <mat-list-item>
-        <button mat-button routerLink="/products"><mat-icon>confirmation_number</mat-icon>Billets</button>
+        <button mat-button routerLink="/products">
+          <mat-icon>confirmation_number</mat-icon>
+          Billets
+        </button>
       </mat-list-item>
     </mat-nav-list>
   </mat-drawer>
   <mat-drawer-content class="height-container">
     <router-outlet></router-outlet>
   </mat-drawer-content>
-
 </mat-drawer-container>

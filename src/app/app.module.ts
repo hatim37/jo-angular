@@ -38,6 +38,7 @@ import {MatCheckbox} from '@angular/material/checkbox';
 import {MatInput} from '@angular/material/input';
 import {MatDialogActions, MatDialogClose, MatDialogContent} from '@angular/material/dialog';
 import { ValidationComponent } from './validation/validation.component';
+import { LoginComponent } from './login/login.component';
 
 registerLocaleData(localeFr, 'fr-FR');
 @NgModule({
@@ -52,7 +53,8 @@ registerLocaleData(localeFr, 'fr-FR');
     CaddyComponent,
     SignupComponent,
     SnackbarComponent,
-    ValidationComponent
+    ValidationComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

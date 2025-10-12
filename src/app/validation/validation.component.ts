@@ -1,11 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
 import {SnackbarService} from '../services/snackbar.service';
-import {CaddiesService} from '../services/caddies.service';
+
 
 @Component({
 
@@ -29,7 +27,8 @@ export class ValidationComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
-              private snackbarService: SnackbarService) {
+              private snackbarService: SnackbarService,
+              private router: Router,) {
   }
 
 
@@ -59,8 +58,22 @@ export class ValidationComponent implements OnInit {
     //on valide le code
     this.authService.validation({code: this.loginForm.value.code}).subscribe({
       next: value => {
-        this.valueBackend = value;
-        this.snackbarService.openValidationDialog(this.valueBackend.body, this.valueBackend.statusCodeValue, 5000, '/login', 'green');
+
+        //appel login si authentification d'appareil
+        if (this.messageError == "Nouvel appareil détecté") {
+          this.authService.loginValidation(this.uuid).subscribe({
+            next: value => {
+              //on charge les informations depuis le token + archive du token en storage
+              this.authService.loadProfile(value);
+              this.snackbarService.openValidationDialog("Authentification réussie", 200, 1500, '/', 'green');
+            }, error: error => {
+              this.router.navigate(['/login']);
+            }
+          })
+        } else {
+          this.snackbarService.openValidationDialog("Votre compte est activé !", 200, 1500,'/login', 'green');
+        }
+
       }, error: (err: any) => {
         this.snackbarService.openValidationDialog(err.error, 403, 5000, '/login', 'red');
       }
