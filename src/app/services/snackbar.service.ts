@@ -11,7 +11,7 @@ export class SnackbarService {
 
   constructor(private dialog: MatDialog, private router: Router) {}
 
-  openValidationDialog(message: string, statusCode: number, durationMs: number = 5000, url:string, color: 'red' | 'green' = 'green'): void {
+  openValidationDialog(message: string, statusCode: number, durationMs: number = 5000, url:string, color: 'red' | 'green' = 'green',state?: any): void {
     const dialogRef = this.dialog.open(SnackbarComponent, {
       data: { message, color },
       width: '400px',
@@ -22,7 +22,7 @@ export class SnackbarService {
 
     dialogRef.afterClosed().subscribe(() => {
       if (statusCode === 200) {
-        this.router.navigate([url]);
+        this.router.navigate([url], { state });
       }
     });
   }

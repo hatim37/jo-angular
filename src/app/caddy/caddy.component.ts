@@ -5,6 +5,7 @@ import {Product} from '../model/product.model';
 import {CartService} from '../services/cart.service';
 import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
+import {BehaviorSubject, Subscription, take} from 'rxjs';
 
 @Component({
   selector: 'app-caddy',
@@ -24,6 +25,9 @@ export class CaddyComponent implements OnInit {
   public errorGetCaddy: boolean = false;
   loadingAdd: { [id: number]: boolean } = {};
   loadingRemove: { [id: number]: boolean } = {};
+  fromValidation=false;
+  fromLogin=false;
+  private cartUpdatedSub?: Subscription;
 
   constructor(public caddyService: CaddiesService,
               private cartService: CartService,
@@ -32,15 +36,55 @@ export class CaddyComponent implements OnInit {
               private router: Router,) {
   }
 
-  ngOnInit() {
-    this.getCaddies();
+  ngOnInit(): void {
+    // Vérifie si la navigation vient de Validation ou Login
+    this.fromValidation = history.state?.fromValidation;
+    this.fromLogin = history.state?.fromLogin;
 
+    // éviter relance sur refresh
+    if (this.fromValidation || this.fromLogin) {
+      history.replaceState({}, '');
+    }
+
+    // Si on url from Validation ou Login
+    if (this.fromValidation || this.fromLogin) {
+      this.loading = true;
+
+      // Vérifie si le CartService a déjà émis `true`
+      const alreadyUpdated = (this.cartService as any).cartUpdatedSubject.getValue();
+      if (alreadyUpdated) {
+        this.getCartBackend();
+        this.cartService.setCartUpdated(false);
+      } else {
+        // Sinon on attend l'événement cartUpdated$
+        this.cartUpdatedSub = this.cartService.cartUpdated$
+          .pipe(take(1))
+          .subscribe((updated) => {
+            if (updated) {
+              this.getCartBackend();
+              this.cartService.setCartUpdated(false);
+            }
+          });
+      }
+    }
+    else {
+      this.getCaddies();
+    }
   }
+
+  ngOnDestroy(): void {
+    if (this.cartUpdatedSub) {
+      this.cartUpdatedSub.unsubscribe();
+    }
+  }
+
 
   public getCaddies() {
     if(this.authService.authenticated){
       this.cartService.getSizeCaddy();
-      this.getCartBackend();
+      if (!this.fromValidation && !this.fromLogin) {
+        this.getCartBackend();
+      }
     } else {
       this.caddy=this.caddyService.getCurrentCaddy();
       this.caddy.items.forEach((item: any) => {
@@ -105,6 +149,7 @@ export class CaddyComponent implements OnInit {
     });
   }
 
+
   getCartBackend() {
     this.loading=true;
     this.entries = [];
@@ -121,7 +166,6 @@ export class CaddyComponent implements OnInit {
         this.loading=false;
         this.errorGetCaddy = true
         this.snackBar.open('Erreur, veuillez réessayer', 'close', {duration: 3000, panelClass: 'error-snackbar'});
-
       }
     })
   }

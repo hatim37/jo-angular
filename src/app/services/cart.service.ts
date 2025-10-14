@@ -4,12 +4,21 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AuthService} from './auth.service';
 import {CaddiesService} from './caddies.service';
 import {AddProductInCartDto} from '../model/AddProductInCartDto';
+import {BehaviorSubject} from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
+
+  private cartUpdatedSubject = new BehaviorSubject<boolean>(false);
+  cartUpdated$ = this.cartUpdatedSubject.asObservable();
+
+  setCartUpdated(updated: boolean) {
+    this.cartUpdatedSubject.next(updated);
+  }
+
 
   options:any = {headers: new HttpHeaders().set('Content-Type', 'application/json')};
   public caddy: AddProductInCartDto[] | undefined;
@@ -19,6 +28,8 @@ export class CartService {
   constructor(private authService: AuthService,
               private http: HttpClient,
               private caddyService: CaddiesService) {}
+
+
 
   sendCaddyInBackend(){
     const itemsMap =this.caddyService.getCurrentCaddy().items;
@@ -32,12 +43,18 @@ export class CartService {
     );
     this.sendCaddy(this.authService.userId, this.caddy).subscribe({
       next: data => {
+        this.getSizeCaddy();
+        this.setCartUpdated(true);
+        this.caddy = [];
+        this.entries = [];
+        this.getCartByUserId();
+        this.caddyService.clearCaddy();
+      },
+      error: err => {
+        this.setCartUpdated(true);
+        console.error('Erreur lors de l\'envoi du panier', err);
       }
     });
-    this.caddy = [];
-    this.entries = [];
-    this.getCartByUserId();
-    this.caddyService.clearCaddy();
   }
 
   public addToCart(productId:any, option:string, quantity:number) {

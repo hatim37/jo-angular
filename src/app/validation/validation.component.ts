@@ -64,7 +64,6 @@ export class ValidationComponent implements OnInit {
     //on valide le code
     this.authService.validation({code: this.loginForm.value.code}).subscribe({
       next: value => {
-
         //appel login si authentification d'appareil
         if (this.messageError == "Nouvel appareil détecté") {
           this.authService.loginValidation(this.uuid).subscribe({
@@ -75,18 +74,18 @@ export class ValidationComponent implements OnInit {
               //recherche si panier pour envoi backend :
               if (this.caddyService.getCurrentCaddy().items.size > 0) {
                 this.cartService.sendCaddyInBackend();
-                this.cartService.getSizeCaddy();
-                this.snackbarService.openValidationDialog("Authentification réussie", 200, 1500, '/', 'green');
+                this.snackbarService.openValidationDialog("Authentification réussie", 200, 1500, '/panier', 'green',{ fromValidation: true });
               } else {
                 this.snackbarService.openValidationDialog("Authentification réussie", 200, 1500, '/', 'green');
               }
 
             }, error: error => {
+              this.snackbarService.openValidationDialog("Échec authentification", 403, 1500, '/', 'red');
               this.router.navigate(['/login']);
             }
           })
         } else {
-          this.snackbarService.openValidationDialog("Votre compte est activé !", 200, 1500,'/login', 'green');
+          this.snackbarService.openValidationDialog("Votre compte est activé", 200, 1500,'/login', 'green');
         }
 
       }, error: (err: any) => {

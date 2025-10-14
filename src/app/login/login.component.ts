@@ -58,8 +58,8 @@ export class LoginComponent implements OnInit {
         //recherche si panier pour envoi backend :
         if (this.caddyService.getCurrentCaddy().items.size > 0) {
           this.cartService.sendCaddyInBackend();
-          setTimeout(() => {this.cartService.getSizeCaddy();}, 500);
-          this.snackbarService.openValidationDialog("Authentification réussie", 200, 1500, '/panier', 'green');
+          //setTimeout(() => {this.cartService.getSizeCaddy();}, 500);
+          this.snackbarService.openValidationDialog("Authentification réussie", 200, 1500, '/panier', 'green',{ fromLogin: true });
         } else {
           this.snackbarService.openValidationDialog("Authentification réussie", 200, 1500, '/', 'green');
         }
