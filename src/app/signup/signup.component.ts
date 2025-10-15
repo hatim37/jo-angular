@@ -64,13 +64,14 @@ export class SignupComponent implements OnInit {
     this.authService.register(user).subscribe({
       next: (value: any) => {
         this.valueBackend=value;
+        this.submitting = false;
         this.snackbarService.openValidationDialog("Votre compte est créer !", 201, 2000,'/', 'green');
         if(this.valueBackend.body.message == "validation"){
           this.router.navigate(['/validation'], {
-            state: { email: this.signupForm.value.email, optionId: this.valueBackend.body.id, message: "Activez votre compte" },
+            state: { email: this.signupForm.value.email, optionId: this.valueBackend.body.id, message: "Activez votre compte" }
           });
+
         }
-        this.submitting = false;
       }, error: (err: any) => {
         this.snackbarService.openValidationDialog(err.error.error, err.status, 5000,'/', 'red');
         this.submitting = false;

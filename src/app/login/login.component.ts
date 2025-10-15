@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   messageError!:string;
   valueBackend:any;
   optionError: any;
+  submitting: boolean = false;
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -46,6 +47,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    this.submitting = true;
     let email = this.loginForm.value.email;
     let password =this.loginForm.value.password;
 
@@ -55,6 +57,7 @@ export class LoginComponent implements OnInit {
         //on charge les informations depuis le token + archive du token en storage
         this.authService.loadProfile(value);
         this.cartService.getSizeCaddy();
+        this.submitting = false;
         //recherche si panier pour envoi backend :
         if (this.caddyService.getCurrentCaddy().items.size > 0) {
           this.cartService.sendCaddyInBackend();
@@ -71,14 +74,17 @@ export class LoginComponent implements OnInit {
             state: { email: email, optionId : this.optionError, message: this.messageError, uuid: err.error.uuid}
           });
         }
+        this.submitting = false;
       }
     });
   }
 
   newPassword() {
+    this.submitting = true;
     let email = this.passwordForm.value.email;
     this.authService.editPassword({email: email}).subscribe({
       next: value => {
+        this.submitting = false;
         this.valueBackend = value;
         if (this.valueBackend.body.message == "validation") {
           this.router.navigate(['/validation'], {

@@ -21,13 +21,14 @@ interface Card {
 export class PaymentComponent implements OnInit {
 
   paymentForm!: FormGroup;
-  submitting = false;
 
   cards: Card[] = [
     {value: 'visa-0', viewValue: 'Visa'},
     {value: 'mCard-1', viewValue: 'MasterCard'},
     {value: 'aExpress-2', viewValue: 'American Express'},
   ];
+  submitting: boolean = false;
+
 
   constructor(public dialog: MatDialog,
               private fb: FormBuilder,
@@ -62,7 +63,7 @@ export class PaymentComponent implements OnInit {
           this.submitting = false;
         }
       }, error: (err: any) => {
-
+        this.submitting = false;
       }
     })
   }

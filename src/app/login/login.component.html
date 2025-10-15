@@ -24,7 +24,7 @@
         </mat-card-actions>
 
         <div class="button-row">
-          <button mat-raised-button color="primary" type="submit"  [disabled]="loginForm.invalid" class="order-*button" (click)="onSubmit()">
+          <button mat-raised-button color="primary" type="submit"  [disabled]="loginForm.invalid || submitting" class="order-*button" (click)="onSubmit()">
             Connexion
           </button>
         </div>
@@ -49,7 +49,7 @@
         </mat-hint>
 
         <div class="button-row">
-          <button mat-raised-button color="primary" type="submit"  [disabled]="passwordForm.invalid" class="order-*button" (click)="newPassword()">
+          <button mat-raised-button color="primary" type="submit"  [disabled]="passwordForm.invalid || submitting" class="order-*button" (click)="newPassword()">
             Valider
           </button>
         </div>

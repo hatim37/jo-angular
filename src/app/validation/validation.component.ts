@@ -28,6 +28,7 @@ export class ValidationComponent implements OnInit {
   hasNumber: boolean = false;
   hidePassword = true;
   uuid: any;
+  submitting: boolean = false;
 
   constructor(private fb: FormBuilder,
               private snackBar: MatSnackBar,
@@ -61,9 +62,11 @@ export class ValidationComponent implements OnInit {
   }
 
   onSubmit() {
+    this.submitting = true;
     //on valide le code
     this.authService.validation({code: this.loginForm.value.code}).subscribe({
       next: value => {
+        this.submitting = false;
         //appel login si authentification d'appareil
         if (this.messageError == "Nouvel appareil détecté") {
           this.authService.loginValidation(this.uuid).subscribe({
@@ -90,6 +93,7 @@ export class ValidationComponent implements OnInit {
 
       }, error: (err: any) => {
         this.snackbarService.openValidationDialog(err.error, 403, 5000, '/login', 'red');
+        this.submitting = false;
       }
     });
   }
@@ -103,17 +107,21 @@ export class ValidationComponent implements OnInit {
   }
 
   sendNewCode() {
+    this.submitting = true;
     this.authService.sendNewCode({id: +this.optionId}).subscribe({
       next: value => {
+        this.submitting = false;
         this.valueBackend = value;
         this.snackbarService.openValidationDialog(this.valueBackend.body, 201, 5000, '/', 'green');
       }, error: (err: any) => {
         this.snackbarService.openValidationDialog("Service indisponible", 201, 3000, '/', 'red');
+        this.submitting = false;
       }
     });
   }
 
   newPassword() {
+    this.submitting = true;
     let code = this.passwordForm.value.code;
     let password = this.passwordForm.value.password;
     let confirmPassword = this.passwordForm.value.confirmPassword;
@@ -127,6 +135,7 @@ export class ValidationComponent implements OnInit {
     }
     this.authService.validation({code: code, password: password}).subscribe({
       next: value => {
+        this.submitting = false;
         this.valueBackend = value;
         if (this.authService.authenticated) {
           this.snackbarService.openValidationDialog(this.valueBackend.body, this.valueBackend.statusCodeValue, 3000, '/customers/account', 'green');
@@ -135,6 +144,7 @@ export class ValidationComponent implements OnInit {
         }
       }, error: (err: any) => {
         this.snackbarService.openValidationDialog(err.error, err.status, 5000, '/', 'red');
+        this.submitting = false;
       }
     });
   }
