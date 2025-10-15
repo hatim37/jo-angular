@@ -30,6 +30,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {MatOption, MatSelect} from '@angular/material/select';
 import { AllOrdersComponent } from './composants/all-orders/all-orders.component';
 import { AnalyticsComponent } from './composants/analytics/analytics.component';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -80,6 +81,7 @@ import { AnalyticsComponent } from './composants/analytics/analytics.component';
     ReactiveFormsModule,
     FormsModule,
     MatCheckbox,
+    MatProgressSpinner,
   ]
 })
 export class AdminModule { }

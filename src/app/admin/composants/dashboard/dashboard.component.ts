@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
   quantityMap: { [productId: number]: number } = {};
   public errorGetProducts: boolean | undefined;
   loading: boolean = false;
+  loadingProducts: { [productId: string]: boolean } = {};
 
   constructor(private adminService: AdminService,
               private fb: FormBuilder,
@@ -89,6 +90,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onAddProductToCaddy(p: Product, option:string, quantity:number, form: NgForm){
+    this.loadingProducts[p.id] = true;
     const qty = Number(quantity) > 0 ? Number(quantity) : 1;
     if(this.authService.authenticated){
       this.submitting = true;
@@ -100,10 +102,12 @@ export class DashboardComponent implements OnInit {
           this.quantityMap[p.id] = 1;
           form.resetForm({ quantity: 1 });
           this.submitting = false;
+          this.loadingProducts[p.id] = false;
         },
         error: err => {
           this.snackBar.open('erreur, '+err.error.error, 'close', {duration: 3000, panelClass: 'error-snackbar'});
           this.submitting = false;
+          this.loadingProducts[p.id] = false;
         }
       });
     } else {
