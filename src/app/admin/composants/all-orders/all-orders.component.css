@@ -1,0 +1,41 @@
+
+.orders-mobile {
+  display: none;
+}
+
+
+@media (max-width: 768px) {
+  .orders-desktop {
+    display: none;
+  }
+  .orders-mobile {
+    display: block;
+  }
+}
+
+.order-card .label {
+  font-size: .85rem;
+  color: rgba(0,0,0,.6);
+}
+
+.order-card .value {
+  font-weight: 600;
+}
+
+.order-card .order-avatar {
+  background: #3f51b5;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+}
+
+.order-card .status {
+  display: inline-block;
+  padding: .15rem .5rem;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 600;
+  background: #eceff1;
+  color: #37474f;
+}

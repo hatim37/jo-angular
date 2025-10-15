@@ -18,6 +18,12 @@ export class AllOrdersComponent implements OnInit{
   dataSource = new MatTableDataSource<any>([]);
   displayedColumns: ColumnKey[] = ['commande','amount','date','status','action'];
   error?: string;
+  pagedOrders: any[] = [];        // ✅ commandes paginées pour mobile
+  pageSizeMobile = 5;            // ✅ nombre d'éléments par page mobile
+  currentPageMobile = 1;
+  totalPagesMobile = 1;
+
+
   // Options de colonnes pour le filtre
   columnOptions: { key: ColumnKey; label: string; visible: boolean }[] = [
     { key: 'commande', label: 'Commande', visible: true },
@@ -46,6 +52,8 @@ export class AllOrdersComponent implements OnInit{
         this.dataSource = new MatTableDataSource(this.myOrders);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.currentPageMobile = 1;
+        this.updatePagedOrders();
       },
       error: (err: any) => {
         this.error = 'Impossible de charger vos commandes.';
@@ -66,4 +74,35 @@ export class AllOrdersComponent implements OnInit{
 
     this.displayedColumns = selected.length ? selected : ['commande'];
   }
+
+  statusClass(status: string) {
+    const s = (status || '').toLowerCase();
+    if (['paid', 'validée', 'validee'].includes(s)) return 'chip-success';
+    if (['pending', 'en cours'].includes(s))       return 'chip-warn';
+    if (['cancelled', 'annulée', 'annulee'].includes(s)) return 'chip-accent';
+    return 'chip-default';
+  }
+
+  //Pagination mobile
+  updatePagedOrders() {
+    this.totalPagesMobile = Math.ceil(this.myOrders.length / this.pageSizeMobile);
+    const start = (this.currentPageMobile - 1) * this.pageSizeMobile;
+    const end = start + this.pageSizeMobile;
+    this.pagedOrders = this.myOrders.slice(start, end);
+  }
+
+  nextPageMobile() {
+    if (this.currentPageMobile < this.totalPagesMobile) {
+      this.currentPageMobile++;
+      this.updatePagedOrders();
+    }
+  }
+
+  prevPageMobile() {
+    if (this.currentPageMobile > 1) {
+      this.currentPageMobile--;
+      this.updatePagedOrders();
+    }
+  }
+
 }

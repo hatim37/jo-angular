@@ -25,7 +25,7 @@
           <span>Aucun utilisateur.</span>
         </div>
       </div>
-      <div *ngIf="!loading && !error && allUsers.length > 0">
+      <div *ngIf="!loading && !error && allUsers.length > 0" class="d-none d-md-block">
         <div class="table-toolbar">
           <mat-form-field appearance="outline" class="search-field">
             <mat-label>Rechercher
@@ -125,6 +125,73 @@
         </div>
         <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
       </div>
+      <!-- version mobile -->
+      <div class="row g-3 d-md-none" *ngIf="!loading && !messageError && pagedUsers.length > 0">
+        <div class="col-12" *ngFor="let u of pagedUsers">
+          <mat-card class="user-card mat-elevation-z2 mt-2">
+            <mat-card-header>
+              <div mat-card-avatar class="user-avatar">{{ u.username[0] | uppercase }}</div>
+              <mat-card-title>{{ u.username }} {{ u.name }}</mat-card-title>
+              <mat-card-subtitle>{{ u.email }}</mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content>
+              <div class="row">
+                <div class="col-6">
+                  <div class="label">ID</div>
+                  <div class="value">{{ u.id }}</div>
+                </div>
+                <div class="col-6 text-end">
+                  <div class="label">Statut</div>
+                  <span class="status" [ngClass]="statusClass(u.active)">
+                    {{ u.active ? 'Actif' : 'Inactif' }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="mt-2">
+                <div class="label">Rôles</div>
+                <ng-container *ngIf="editUserId !== u.id">
+                  <div class="value">{{ getRoleNames(u.roles).join(', ') }}</div>
+                </ng-container>
+                <ng-container *ngIf="editUserId === u.id">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <mat-select
+                      [value]="getRoleNames(u.roles)"
+                      (selectionChange)="onRolesChange(u, $event.value)"
+                      multiple>
+                      <mat-option *ngFor="let role of allRoles" [value]="role.name">
+                        {{ role.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </ng-container>
+              </div>
+            </mat-card-content>
+
+            <mat-card-actions align="end">
+              <button mat-raised-button color="primary" *ngIf="editUserId !== u.id" (click)="editUser(u.id)">
+                <mat-icon>edit</mat-icon>
+                <span class="ms-1">Modifier</span>
+              </button>
+              <button mat-raised-button color="warn" *ngIf="editUserId === u.id" (click)="deleteAccount(u.email)">
+                <mat-icon>delete_forever</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+
+      <div *ngIf="totalPagesMobile > 1" class="d-flex justify-content-center mt-3 d-md-none">
+        <button mat-icon-button (click)="prevPageMobile()" [disabled]="currentPageMobile === 1">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <span class="px-3">{{ currentPageMobile }} / {{ totalPagesMobile }}</span>
+        <button mat-icon-button (click)="nextPageMobile()" [disabled]="currentPageMobile === totalPagesMobile">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+
     </mat-card-content>
   </mat-card>
 </div>

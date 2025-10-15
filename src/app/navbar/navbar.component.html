@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar #toolbar color="primary" class="fixed-navbar">
   <button mat-icon-button (click)="drawer.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
@@ -23,9 +23,9 @@
     Connexion
   </button>
 </mat-toolbar>
-<mat-drawer-container>
-  <mat-drawer #drawer position="start" [mode]="drawerMode" [opened]="drawerOpened">
-    <mat-nav-list>
+<mat-drawer-container class="drawer-container">
+  <mat-drawer #drawer position="start" [mode]="drawerMode" [opened]="drawerOpened" class="drawer">
+    <mat-nav-list class="mobileMode">
       <mat-list-item>
         <button mat-button routerLink="">
           <mat-icon>dashboard</mat-icon>Accueil</button>
@@ -53,7 +53,7 @@
       </mat-list-item>
     </mat-nav-list>
   </mat-drawer>
-  <mat-drawer-content class="height-container">
+  <mat-drawer-content class="height-container drawer-content content-with-navbar">
     <router-outlet></router-outlet>
   </mat-drawer-content>
 </mat-drawer-container>

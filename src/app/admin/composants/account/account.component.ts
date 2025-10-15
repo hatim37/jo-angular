@@ -25,7 +25,10 @@ export class AccountComponent implements OnInit{
   dataSource = new MatTableDataSource<any>([]);
   valueBackend: any;
   messageError: any;
-
+  pagedUsers: any[] = [];
+  pageSizeMobile = 5;
+  currentPageMobile = 1;
+  totalPagesMobile = 1;
 
   // Non des colonnes
   displayCols: { key: ColKey; label: string; show: boolean }[] = [
@@ -63,6 +66,12 @@ export class AccountComponent implements OnInit{
     this.getAllUsers();
   }
 
+  statusClass(active: boolean) {
+    if (active) return 'chip-success';
+    return 'chip-accent';
+  }
+
+
   labelOf(key: ColKey): string {
     return this.displayCols.find(c => c.key === key)?.label ?? key;
   }
@@ -86,6 +95,8 @@ export class AccountComponent implements OnInit{
         this.dataSource = new MatTableDataSource(this.allUsers);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.currentPageMobile = 1;
+        this.updatePagedUsers();
       },
       error: (err: any) => {
         this.loading = false;
@@ -144,5 +155,27 @@ export class AccountComponent implements OnInit{
         });
       }
     });
+  }
+
+  // Pagination mobile
+  updatePagedUsers() {
+    this.totalPagesMobile = Math.ceil(this.allUsers.length / this.pageSizeMobile);
+    const start = (this.currentPageMobile - 1) * this.pageSizeMobile;
+    const end = start + this.pageSizeMobile;
+    this.pagedUsers = this.allUsers.slice(start, end);
+  }
+
+  nextPageMobile() {
+    if (this.currentPageMobile < this.totalPagesMobile) {
+      this.currentPageMobile++;
+      this.updatePagedUsers();
+    }
+  }
+
+  prevPageMobile() {
+    if (this.currentPageMobile > 1) {
+      this.currentPageMobile--;
+      this.updatePagedUsers();
+    }
   }
 }

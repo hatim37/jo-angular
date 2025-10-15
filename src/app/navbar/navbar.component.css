@@ -21,3 +21,25 @@
     font-size: 0.9rem !important;
   }
 }
+
+
+
+@media (max-width: 768px) {
+  mat-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  .mobileMode {
+    margin-top: 56px;
+  }
+
+  mat-drawer-content {
+    padding-top: 56px;
+  }
+}
+
+
+

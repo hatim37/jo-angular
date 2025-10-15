@@ -34,7 +34,7 @@
             </mat-label>
             <input matInput (input)="filterCoupon($event)">
           </mat-form-field>
-          <div class="column-filters">
+          <div class="column-filters orders-desktop">
             <span class="me-2">Filtres :</span>
             <mat-checkbox *ngFor="let c of columnOptions" class="me-3" [(ngModel)]="c.visible"
                           (change)="applyColumnVisibility()">{{ c.label }}
@@ -42,47 +42,100 @@
           </div>
 
         </div>
-        <div class="table-container">
-          <table mat-table [dataSource]="dataSource"
-                 class="mat-elevation-z2"
-                 matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
-            <ng-container matColumnDef="commande">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Commande</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.trackingId | uppercase | slice:0:8 }}
-              </td>
-            </ng-container>
+        <div class="orders-desktop d-none d-md-block">
+          <div class="table-container">
+            <table mat-table [dataSource]="dataSource"
+                   class="mat-elevation-z2"
+                   matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
+              <ng-container matColumnDef="commande">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Commande</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.trackingId | uppercase | slice:0:8 }}
+                </td>
+              </ng-container>
 
-            <ng-container matColumnDef="amount">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Montant</th>
-              <td mat-cell *matCellDef="let element">{{ element.amount | number:'0.2' }} €</td>
-            </ng-container>
+              <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Montant</th>
+                <td mat-cell *matCellDef="let element">{{ element.amount | number:'0.2' }} €</td>
+              </ng-container>
 
-            <ng-container matColumnDef="date">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
-              <td mat-cell *matCellDef="let element">{{ element.date | date:'dd/MM/YYYY' }}</td>
-            </ng-container>
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                <td mat-cell *matCellDef="let element">{{ element.date | date:'dd/MM/YYYY' }}</td>
+              </ng-container>
 
-            <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-              <td mat-cell *matCellDef="let element">{{ element.orderStatus }}</td>
-            </ng-container>
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                <td mat-cell *matCellDef="let element">{{ element.orderStatus }}</td>
+              </ng-container>
 
-            <ng-container matColumnDef="action">
-              <th mat-header-cell *matHeaderCellDef>Action</th>
-              <td mat-cell *matCellDef="let element">
-                <button mat-raised-button color="primary"
-                        [routerLink]="'/customers/product_list_order/' + element.id">
-                  e-billet
-                </button>
-              </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-raised-button color="primary"
+                          [routerLink]="'/customers/product_list_order/' + element.id">
+                    e-billet
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+          <mat-paginator [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
         </div>
-        <mat-paginator [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+
+        <!-- Version mobile  -->
+        <div class="orders-mobile d-block d-md-none" *ngIf="!loading && !error && pagedOrders.length > 0">
+          <div class="row g-3">
+            <div class="col-12" *ngFor="let o of pagedOrders">
+              <mat-card class="order-card mat-elevation-z2">
+                <mat-card-header>
+                  <div mat-card-avatar class="order-avatar">#</div>
+                  <mat-card-title>Commande {{ o.trackingId | uppercase | slice:0:8 }}</mat-card-title>
+                  <mat-card-subtitle>{{ authService.username }}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="label">Montant</div>
+                      <div class="value">{{ o.amount | number:'0.2' }} €</div>
+                    </div>
+                    <div class="col-6 text-end">
+                      <div class="label">Date</div>
+                      <div class="value">{{ o.date | date:'dd/MM/yyyy' }}</div>
+                    </div>
+                  </div>
+                  <div class="mt-2">
+                    <span class="status" [ngClass]="statusClass(o.orderStatus)">{{ o.orderStatus }}</span>
+                  </div>
+                </mat-card-content>
+                <mat-card-actions align="end">
+                  <button mat-raised-button color="primary" [routerLink]="'/customers/product_list_order/' + o.id">
+                    e-billet
+                  </button>
+                </mat-card-actions>
+              </mat-card>
+            </div>
+          </div>
+
+          <!-- Pagination mobile -->
+          <div *ngIf="totalPagesMobile > 1" class="d-flex justify-content-center mt-3">
+            <button mat-icon-button (click)="prevPageMobile()" [disabled]="currentPageMobile === 1">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+            <span class="px-3">{{ currentPageMobile }} / {{ totalPagesMobile }}</span>
+            <button mat-icon-button (click)="nextPageMobile()" [disabled]="currentPageMobile === totalPagesMobile">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
+        </div>
+
+
       </div>
+
     </mat-card-content>
   </mat-card>
 </div>
+

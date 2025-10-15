@@ -55,7 +55,7 @@
           </mat-card>
         </div>
       </div>
-      <mat-paginator *ngIf="orders.length > 0" [length]="orders.length" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons (page)="onPage($event)">
+      <mat-paginator class="mt-2" *ngIf="orders.length > 0" [length]="orders.length" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons (page)="onPage($event)">
       </mat-paginator>
     </mat-card-content>
   </mat-card>
