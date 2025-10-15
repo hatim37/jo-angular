@@ -101,10 +101,12 @@ export class LoginComponent implements OnInit {
 
   formPassword() {
     this.mode = 1;
+    this.messageError = '';
   }
 
   formConnect() {
     this.mode = 0;
+    this.messageError = '';
   }
 }
 
