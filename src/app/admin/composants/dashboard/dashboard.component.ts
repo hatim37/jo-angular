@@ -91,7 +91,7 @@ export class DashboardComponent implements OnInit {
 
   onAddProductToCaddy(p: Product, option:string, quantity:number, form: NgForm){
     this.loadingProducts[p.id] = true;
-    const qty = Number(quantity) > 0 ? Number(quantity) : 1;
+    const qty = this.quantityMap[p.id] || 1;
     if(this.authService.authenticated){
       this.submitting = true;
       this.cartService.addToCart(p.id,"add", qty).subscribe({
@@ -113,6 +113,7 @@ export class DashboardComponent implements OnInit {
     } else {
       this.caddyService.addProductToCaddy(p, option,qty);
       form.resetForm({ quantity: 1 });
+      this.loadingProducts[p.id] = false;
     }
   }
 }
