@@ -67,6 +67,7 @@ export class LoginComponent implements OnInit {
           this.snackbarService.openValidationDialog("Authentification réussie", 200, 1500, '/', 'green');
         }
       }, error: (err: any) => {
+        this.submitting = false;
         this.messageError = err.error.error;
         this.optionError = err.error.option;
         if(this.messageError == "Compte non activé" || this.messageError == "Nouvel appareil détecté"){
@@ -74,7 +75,6 @@ export class LoginComponent implements OnInit {
             state: { email: email, optionId : this.optionError, message: this.messageError, uuid: err.error.uuid}
           });
         }
-        this.submitting = false;
       }
     });
   }
@@ -94,6 +94,7 @@ export class LoginComponent implements OnInit {
       }, error: (err: any) => {
         this.messageError = err.error.error;
         this.snackbarService.openValidationDialog(this.messageError, 403, 5000, '/login', 'red');
+        this.submitting = false;
       }
     });
   }

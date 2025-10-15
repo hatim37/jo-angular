@@ -42,7 +42,6 @@ export class ValidationComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log(this.submitting)
     //on recuperer le email saisi dans le formulaire précedent
     this.email = history.state['email'] || '';
     this.optionId = history.state['optionId'] || '';
