@@ -21,13 +21,13 @@ interface Card {
 export class PaymentComponent implements OnInit {
 
   paymentForm!: FormGroup;
+  submitting = false;
 
   cards: Card[] = [
     {value: 'visa-0', viewValue: 'Visa'},
     {value: 'mCard-1', viewValue: 'MasterCard'},
     {value: 'aExpress-2', viewValue: 'American Express'},
   ];
-
 
   constructor(public dialog: MatDialog,
               private fb: FormBuilder,
@@ -48,6 +48,7 @@ export class PaymentComponent implements OnInit {
   }
 
   onSubmit() {
+    this.submitting = true;
     this.customerService.placeOrder(this.data).subscribe({
       next: (data: any) => {
         if(data){
@@ -55,8 +56,10 @@ export class PaymentComponent implements OnInit {
           this.router.navigate(['/customers/commandes']);
           this.closeForm();
           this.cartService.getSizeCaddy();
+          this.submitting = false;
         } else {
           this.snackBar.open('échec, veuillez rééssayer', 'close', {duration: 3000, panelClass: 'error-snackbar'});
+          this.submitting = false;
         }
       }, error: (err: any) => {
 

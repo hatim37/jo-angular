@@ -37,7 +37,7 @@
         </mat-form-field>
 
         <div class="button-row">
-          <button mat-raised-button color="primary" type="submit" [disabled]="paymentForm.invalid" class="order-button" (click)="onSubmit()">
+          <button mat-raised-button color="primary" type="submit" [disabled]="paymentForm.invalid || submitting" class="order-button" (click)="onSubmit()">
             Valider
           </button>
           <button mat-stroked-button color="warn" class="close-button" (click)="closeForm()">

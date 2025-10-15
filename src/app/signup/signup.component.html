@@ -64,7 +64,7 @@
         <mat-error *ngIf="signupForm.get('acceptTerms')?.hasError('required') && signupForm.get('acceptTerms')?.touched">
           Vous devez accepter les Conditions d’Utilisation
         </mat-error>
-        <button class="mt-2" mat-raised-button color="primary" type="submit" [disabled]="signupForm.invalid" (click)="onSubmit()">
+        <button class="mt-2" mat-raised-button color="primary" type="submit" [disabled]="signupForm.invalid || submitting" (click)="onSubmit()">
           Valider
         </button>
       </form>

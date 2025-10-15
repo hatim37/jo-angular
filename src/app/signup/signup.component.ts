@@ -21,6 +21,7 @@ export class SignupComponent implements OnInit {
   hasUpperCase: boolean = false;
   hasNumber: boolean = false;
   valueBackend: any;
+  submitting = false;
 
   constructor(private fb: FormBuilder,
               private snackBar: MatSnackBar,
@@ -58,7 +59,8 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.value.password !== this.signupForm.value.confirmPassword) {
       this.snackBar.open('les mots de passe ne sont pas identiques', 'close', {duration: 3000, panelClass: 'error-snackbar'});
       return
-    } //on vérifie le password saisi
+    }
+    this.submitting = true;
     this.authService.register(user).subscribe({
       next: (value: any) => {
         this.valueBackend=value;
@@ -68,8 +70,10 @@ export class SignupComponent implements OnInit {
             state: { email: this.signupForm.value.email, optionId: this.valueBackend.body.id, message: "Activez votre compte" },
           });
         }
+        this.submitting = false;
       }, error: (err: any) => {
         this.snackbarService.openValidationDialog(err.error.error, err.status, 5000,'/', 'red');
+        this.submitting = false;
       }
     });
   }
