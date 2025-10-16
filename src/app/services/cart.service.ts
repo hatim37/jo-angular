@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AuthService} from './auth.service';
 import {CaddiesService} from './caddies.service';
 import {AddProductInCartDto} from '../model/AddProductInCartDto';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 
 @Injectable({
@@ -13,12 +13,11 @@ import {BehaviorSubject} from 'rxjs';
 export class CartService {
 
   private cartUpdatedSubject = new BehaviorSubject<boolean>(false);
-  cartUpdated$ = this.cartUpdatedSubject.asObservable();
+  cartUpdated$: Observable<boolean> = this.cartUpdatedSubject.asObservable();
 
   setCartUpdated(updated: boolean) {
     this.cartUpdatedSubject.next(updated);
   }
-
 
   options:any = {headers: new HttpHeaders().set('Content-Type', 'application/json')};
   public caddy: AddProductInCartDto[] | undefined;
@@ -29,7 +28,9 @@ export class CartService {
               private http: HttpClient,
               private caddyService: CaddiesService) {}
 
-
+  getCartUpdatedValue(): boolean {
+    return this.cartUpdatedSubject.getValue();
+  }
 
   sendCaddyInBackend(){
     const itemsMap =this.caddyService.getCurrentCaddy().items;

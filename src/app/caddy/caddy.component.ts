@@ -5,7 +5,7 @@ import {Product} from '../model/product.model';
 import {CartService} from '../services/cart.service';
 import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
-import {BehaviorSubject, Subscription, take} from 'rxjs';
+import {BehaviorSubject, filter, Subscription, take} from 'rxjs';
 
 @Component({
   selector: 'app-caddy',
@@ -46,28 +46,29 @@ export class CaddyComponent implements OnInit {
       history.replaceState({}, '');
     }
 
-    // Si on url from Validation ou Login
+    // Si on vient de Validation ou Login
     if (this.fromValidation || this.fromLogin) {
       this.loading = true;
 
-      // Vérifie si le CartService a déjà émis `true`
-      const alreadyUpdated = (this.cartService as any).cartUpdatedSubject.getValue();
-      if (alreadyUpdated) {
+      // ✅ Vérifie la valeur actuelle de cartUpdated
+      if (this.cartService.getCartUpdatedValue()) {
+        // 👉 Si déjà true, on peut directement charger le panier
         this.getCartBackend();
         this.cartService.setCartUpdated(false);
       } else {
-        // Sinon on attend l'événement cartUpdated$
+        // 🪝 Sinon, on attend la première émission true
         this.cartUpdatedSub = this.cartService.cartUpdated$
-          .pipe(take(1))
-          .subscribe((updated) => {
-            if (updated) {
-              this.getCartBackend();
-              this.cartService.setCartUpdated(false);
-            }
+          .pipe(
+            filter(updated => updated === true),
+            take(1)
+          )
+          .subscribe(() => {
+            this.getCartBackend();
+            this.cartService.setCartUpdated(false);
           });
       }
-    }
-    else {
+    } else {
+      // Cas normal si on vient d'ailleurs
       this.getCaddies();
     }
   }
